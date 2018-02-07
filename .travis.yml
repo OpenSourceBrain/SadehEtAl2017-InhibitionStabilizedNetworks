@@ -43,6 +43,7 @@ install:
 script:
     - omv install NEST
     - cd SpikingSimulationModels
+    - sed -i -e s/'N = 2000'/'N = 200'/g defaultParams.py  # Make smaller network size
     - ls -alt
     - python simulateNetworks.py
     - python analyzeResults.py 

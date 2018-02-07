@@ -111,13 +111,16 @@ cell_type = 'aeif_cond_alpha'
 matplotlib.rc('font', serif='sans-serif')
 
 SIZE = 15
-pl.rc('font', size=SIZE)  # controls default text sizes
-pl.rc('axes', titlesize=SIZE)  # fontsize of the axes title
-pl.rc('axes', labelsize=SIZE)  # fontsize of the x and y labels
-pl.rc('xtick', labelsize=SIZE)  # fontsize of the tick labels
-pl.rc('ytick', labelsize=SIZE)  # fontsize of the tick labels
-pl.rc('legend', fontsize=SIZE)  # legend fontsize
-pl.rc('figure', titlesize=SIZE)  # fontsize of the figure title
+try:
+    pl.rc('font', size=SIZE)  # controls default text sizes
+    pl.rc('axes', titlesize=SIZE)  # fontsize of the axes title
+    pl.rc('axes', labelsize=SIZE)  # fontsize of the x and y labels
+    pl.rc('xtick', labelsize=SIZE)  # fontsize of the tick labels
+    pl.rc('ytick', labelsize=SIZE)  # fontsize of the tick labels
+    pl.rc('legend', fontsize=SIZE)  # legend fontsize
+    pl.rc('figure', titlesize=SIZE)  # fontsize of the figure title
+except:
+    pass # Just cosmetic...
 
 # half-frame axes
 def HalfFrame(ax):
