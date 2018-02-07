@@ -1,2 +1,4 @@
 /LinearThresholdModels/.DS_Store
 /SpikingSimulationModels/.DS_Store
+/SpikingSimulationModels/SimulationResults/*
+/SpikingSimulationModels/*.pyc

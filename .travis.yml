@@ -1,0 +1,47 @@
+# Framework for running automated tests on OSB using Travis-CI, see https://github.com/OpenSourceBrain/osb-model-validation
+
+dist: trusty 
+sudo: false  
+
+addons:
+  apt:
+    packages:
+       # Requirements for NEST
+    - python-numpy 
+    - python-scipy 
+    - python-matplotlib 
+    - python-sympy
+    - python-tables 
+    - libreadline6-dev 
+    - libncurses5-dev 
+    - libgsl0-dev
+    - cython
+    
+    
+language: python
+python: 2.7
+
+virtualenv:
+    system_site_packages: true
+
+env:
+    - OMV_ENGINE=PyNEST
+    #- OMV_ENGINE=PyNN_Brian1
+    #- OMV_ENGINE=PyNN_NEURON
+    #- OMV_ENGINE=PyNN_Nest
+    #- OMV_ENGINE=jNeuroML_validate
+
+
+install:
+
+    # Install OMV
+
+    - pip install git+https://github.com/OpenSourceBrain/osb-model-validation
+
+
+script:
+    - omv install NEST
+    - cd SpikingSimulationModels
+    - ls -alt
+    - python simulateNetworks.py
+
