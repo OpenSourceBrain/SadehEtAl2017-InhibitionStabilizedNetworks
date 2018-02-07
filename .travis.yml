@@ -37,7 +37,11 @@ install:
 
     # Install OMV
 
-    - pip install git+https://github.com/OpenSourceBrain/osb-model-validation
+    - git clone https://github.com/OpenSourceBrain/osb-model-validation
+    - cd osb-model-validation
+    - git checkout a3f9828c76cdb21e8e5b9743d5ded8155ef22049 # Nest 2.10.0
+    - python setup.py install
+    - cd ..
 
 
 script:
