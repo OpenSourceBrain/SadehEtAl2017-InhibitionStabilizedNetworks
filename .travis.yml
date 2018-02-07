@@ -12,6 +12,7 @@ addons:
     - python-matplotlib 
     - python-sympy
     - python-tables 
+    - python-tk
     - libreadline6-dev 
     - libncurses5-dev 
     - libgsl0-dev
@@ -44,4 +45,5 @@ script:
     - cd SpikingSimulationModels
     - ls -alt
     - python simulateNetworks.py
+    - python analyzeResults.py 
 
