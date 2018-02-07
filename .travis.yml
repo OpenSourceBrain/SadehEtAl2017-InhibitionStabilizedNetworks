@@ -50,5 +50,5 @@ script:
     - sed -i -e s/'Ntrials = 5'/'Ntrials = 2'/g defaultParams.py  # Make fewer trials
     - ls -alt
     - omv all -V # Run simulateNetworks.py
-    - python analyzeResults.py 
+    #- python analyzeResults.py 
 
