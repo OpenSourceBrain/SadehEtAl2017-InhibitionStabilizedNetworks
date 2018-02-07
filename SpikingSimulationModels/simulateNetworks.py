@@ -35,7 +35,7 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
         # -- restart the simulator
         net_tools._nest_start_()
 
-        init_seed = np.random.randint(1, 1234, 4)
+        init_seed = np.random.randint(1, 1234, n_cores)
         nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
 
         # -- exc & inh neurons

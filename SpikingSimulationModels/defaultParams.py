@@ -94,7 +94,7 @@ Ntrials = 5
 # fraction of Inh neurons
 frac = .2
 # total population size (Exc + Inh)
-N = 200#0
+N = 2000#0
 # size of Inh population
 NI = int(frac*N)
 # size of Exc population
