@@ -91,14 +91,22 @@ Ntrials = 5
 
 # -- network params
 
-# fraction of Inh neurons
-frac = .2
-# total population size (Exc + Inh)
-N = 2000#0
-# size of Inh population
-NI = int(frac*N)
-# size of Exc population
-NE = N - NI
+# N: total population size (Exc + Inh)
+# frac: fraction of Inh neurons
+def set_total_population_size(N_total, frac = .2):
+    global N
+    global NE
+    global NI
+    N = N_total
+    # size of Inh population
+    NI = int(frac*N)
+    # size of Exc population
+    NE = N - NI
+    print("Setting %s cells total, %s E cells, %s I cells"%(N,NE,NI))
+    
+if not 'N' in locals():
+    set_total_population_size(2000)
+    
 
 # range of the size of Inh perturbations
 nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*NI).astype('int')

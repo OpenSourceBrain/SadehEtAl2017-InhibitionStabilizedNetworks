@@ -9,9 +9,6 @@ from imp import reload
 sys.path.append("..")
 
 import defaultParams
-reload(defaultParams)
-from defaultParams import *
-import networkTools; reload(networkTools); import networkTools as net_tools
 import nest
 
 
@@ -46,13 +43,17 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
         
         Bee, Bei = Be, Be
         Bie, Bii = Bi, Bi
+        
+        N = defaultParams.N
+        NE = defaultParams.NE
+        NI = defaultParams.NI
 
         print('\n # -----> size of pert. inh: ', nn_stim)
 
         r_extra = np.zeros(N)
-        r_extra[NE:NE+nn_stim] = r_stim
+        r_extra[NE:NE+nn_stim] = defaultParams.r_stim
 
-        rr1 = r_bkg*np.ones(N)
+        rr1 = defaultParams.r_bkg*np.ones(N)
         rr2 = rr1 + r_extra
 
         
@@ -60,13 +61,13 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
         # -- restart the simulator
         net_tools._nest_start_()
 
-        init_seed = np.random.randint(1, 1234, n_cores)
+        init_seed = np.random.randint(1, 1234, defaultParams.n_cores)
         nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
 
         # -- exc & inh neurons
-        exc_neurons = net_tools._make_neurons_(NE, neuron_model=cell_type, \
+        exc_neurons = net_tools._make_neurons_(NE, neuron_model=defaultParams.cell_type, \
         myparams={'b':NE*[0.], 'a':NE*[0.]})
-        inh_neurons = net_tools._make_neurons_(NI, neuron_model=cell_type, \
+        inh_neurons = net_tools._make_neurons_(NI, neuron_model=defaultParams.cell_type, \
         myparams={'b':NE*[0.],'a':NE*[0.]})
         
         # -- L23 recurrent connectivity
@@ -95,7 +96,7 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
 
         for ii in range(N):
             nest.Connect([pos_inp[ii]], [all_neurons[ii]], \
-            syn_spec = {'weight':Be_bkg, 'delay':delay_default})
+            syn_spec = {'weight':defaultParams.Be_bkg, 'delay':defaultParams.delay_default})
 
         # -- simulating network for N-trials
         for tri in range(Ntrials):
@@ -105,17 +106,17 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
             ## transient
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
-            net_tools._run_simulation_(Ttrans)
+            net_tools._run_simulation_(defaultParams.Ttrans)
 
             ## baseline
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
-            net_tools._run_simulation_(Tblank)
+            net_tools._run_simulation_(defaultParams.Tblank)
 
             ## perturbing a subset of inh
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr2[ii]})
-            net_tools._run_simulation_(Tstim)
+            net_tools._run_simulation_(defaultParams.Tstim)
             
             
         # -- reading out spiking activity
@@ -128,12 +129,12 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
                  range=((T1,T2),(1,N)), bins=((T2-T1)/bw,N))[0] / (bw/1e3)
             return rr
 
-        rout_blank = np.zeros((Ntrials, int(Tblank / bw), N))
-        rout_stim = np.zeros((Ntrials, int(Tstim / bw), N))
+        rout_blank = np.zeros((Ntrials, int(defaultParams.Tblank / bw), N))
+        rout_stim = np.zeros((Ntrials, int(defaultParams.Tstim / bw), N))
         for tri in range(Ntrials):
-            Tblock = Tstim+Tblank+Ttrans
-            rblk = _rate_interval_(spd, Tblock*tri+Ttrans, Tblock*tri+Ttrans+Tblank)
-            rstm = _rate_interval_(spd, Tblock*tri+Ttrans+Tblank, Tblock*(tri+1))
+            Tblock = defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans
+            rblk = _rate_interval_(spd, Tblock*tri+defaultParams.Ttrans, Tblock*tri+defaultParams.Ttrans+defaultParams.Tblank)
+            rstm = _rate_interval_(spd, Tblock*tri+defaultParams.Ttrans+defaultParams.Tblank, Tblock*(tri+1))
             rout_blank[tri,:,:] = rblk
             rout_stim[tri,:,:] = rstm
 
@@ -150,7 +151,6 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
         print('##########')
         
         
-        from pyneuroml import pynml
         xs = [[],[],[]]
         ys = [[],[],[]]
         all_e = []
@@ -174,8 +174,10 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
         
         if show_gui:
             
+            from pyneuroml import pynml
             print("Plotting %s spikes for %s E cells, %s spikes for %s Ip cells, %s spikes for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
+            mksz = 1 if N> 100 else None
             pynml.generate_plot(xs,
                                 ys,
                                 "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim), 
@@ -184,7 +186,7 @@ def testNetwork(Be, Bi , nn_stim, show_gui=True):
                                 colors = ['red','black','blue'],
                                 linestyles = ['','',''],
                                 markers = ['.','.','.'],
-                                markersizes = [1,1,1],
+                                markersizes = [mksz,mksz,mksz],
                                 grid = False,
                                 show_plot_already=False)
 
@@ -202,15 +204,21 @@ if __name__ == '__main__':
     Be=0.1
     Bi=-0.2
     
-    nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*NI).astype('int')
-    nn_stim_rng = (np.array([0.1,.75])*NI).astype('int')
+    if '-small' in sys.argv:
+        defaultParams.set_total_population_size(10)
+    
+    nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*defaultParams.NI).astype('int')
+    nn_stim_rng = (np.array([0.1,.75])*defaultParams.NI).astype('int')
+    if '-small' in sys.argv:
+        nn_stim_rng = (np.array([0.5])*defaultParams.NI).astype('int')
 
     if '-nogui' in sys.argv:
         show_gui = False
     else:
         import matplotlib.pyplot as plt 
         show_gui = True 
-
+        
+    import networkTools as net_tools
 
     for nn_stim in nn_stim_rng:
         testNetwork(Be, Bi, nn_stim, show_gui=show_gui)
