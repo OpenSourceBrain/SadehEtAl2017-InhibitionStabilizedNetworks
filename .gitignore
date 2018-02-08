@@ -3,3 +3,5 @@
 /SpikingSimulationModels/SimulationResults/*
 /SpikingSimulationModels/*.pyc
 /SpikingSimulationModels/Figures/*.pdf
+/PyNN/*.dat
+/PyNN/*.gdf

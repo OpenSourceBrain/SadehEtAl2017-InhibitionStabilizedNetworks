@@ -57,7 +57,7 @@ neuron_params_default = \
   'E_L': Ur*1000.,
   'E_ex': Ue*1000.,
   'E_in': Ui*1000.,
-  'I_e': 0.0,
+  'I_e': 0.0, # 130.0 for slow spiking...
   'V_m': Ur*1000.,
   'V_reset': Ureset*1000.,
   'V_th': Uth*1000.,
