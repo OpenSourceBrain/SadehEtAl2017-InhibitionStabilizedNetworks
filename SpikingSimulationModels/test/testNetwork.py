@@ -14,11 +14,6 @@ from defaultParams import *
 import networkTools; reload(networkTools); import networkTools as net_tools
 import nest
 
-import matplotlib.pyplot as plt
-
-
-
-
 
 
 
@@ -38,7 +33,7 @@ def _mycon_(N1, N2, B12, pr=1.):
 
 
 
-def testNetwork(Be, Bi ,nn_stim):
+def testNetwork(Be, Bi , nn_stim, show_gui=True):
 
         Ntrials = 1
         bw = 50.
@@ -115,13 +110,11 @@ def testNetwork(Be, Bi ,nn_stim):
             ## baseline
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
-            print "Set to %s"%rr1
             net_tools._run_simulation_(Tblank)
 
             ## perturbing a subset of inh
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr2[ii]})
-            print "Set to %s"%rr2
             net_tools._run_simulation_(Tstim)
             
             
@@ -156,9 +149,6 @@ def testNetwork(Be, Bi ,nn_stim):
         np.round(rout_stim[:,:,NE+nn_stim:].mean(),1) )
         print('##########')
         
-        print spd.keys()
-        print spd
-        print len(spd['times'])
         
         from pyneuroml import pynml
         xs = [[],[],[]]
@@ -182,37 +172,48 @@ def testNetwork(Be, Bi ,nn_stim):
                 all_inp.append(time)
                 ys[2].append(cellnum)
         
-        print("Plotting %s spikes for %s E cells, %s spikes for %s Ip cells, %s spikes for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
-        
+        if show_gui:
+            
+            print("Plotting %s spikes for %s E cells, %s spikes for %s Ip cells, %s spikes for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
-        pynml.generate_plot(xs,
-                            ys,
-                            "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim), 
-                            xaxis = "Time (s)", 
-                            yaxis = "Cell number", 
-                            colors = ['red','black','blue'],
-                            linestyles = ['','',''],
-                            markers = ['.','.','.'],
-                            markersizes = [1,1,1],
-                            grid = False,
-                            show_plot_already=False)
-        plt.figure()
-        bins = 20
-        plt.hist(all_e, bins=bins,histtype='step',weights=[1/float(NE)]*len(all_e),color='red')
-        plt.hist(all_ip, bins=bins,histtype='step',weights=[1/float(nn_stim)]*len(all_ip),color='black')
-        plt.hist(all_inp, bins=bins,histtype='step',weights=[1/float(N-NE-nn_stim)]*len(all_inp),color='blue')
-        plt.title("Histogram of spikes")
-        plt.show()
+            pynml.generate_plot(xs,
+                                ys,
+                                "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim), 
+                                xaxis = "Time (s)", 
+                                yaxis = "Cell number", 
+                                colors = ['red','black','blue'],
+                                linestyles = ['','',''],
+                                markers = ['.','.','.'],
+                                markersizes = [1,1,1],
+                                grid = False,
+                                show_plot_already=False)
+
+            plt.figure()
+            bins = 15
+            plt.hist(all_e, bins=bins,histtype='step',weights=[1/float(NE)]*len(all_e),color='red')
+            plt.hist(all_ip, bins=bins,histtype='step',weights=[1/float(nn_stim)]*len(all_ip),color='black')
+            plt.hist(all_inp, bins=bins,histtype='step',weights=[1/float(N-NE-nn_stim)]*len(all_inp),color='blue',ls='--')
+            plt.title("Histogram of spikes")
         
         
     
 if __name__ == '__main__':
     
     Be=0.1
-    Bi=0.2
+    Bi=-0.2
     
     nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*NI).astype('int')
-    nn_stim_rng = (np.array([.95])*NI).astype('int')
+    nn_stim_rng = (np.array([0.1,.75])*NI).astype('int')
+
+    if '-nogui' in sys.argv:
+        show_gui = False
+    else:
+        import matplotlib.pyplot as plt 
+        show_gui = True 
+
 
     for nn_stim in nn_stim_rng:
-        testNetwork(Be, Bi, nn_stim)
+        testNetwork(Be, Bi, nn_stim, show_gui=show_gui)
+        
+    if show_gui:
+        plt.show()
