@@ -38,7 +38,7 @@ def runNetwork(Be,
     NE = defaultParams.NE
     NI = defaultParams.NI
 
-    print('\n # -----> size of pert. inh: ', nn_stim)
+    print('\n # -----> size of pert. inh: %s; base rate %s; pert rate %s'% (nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
 
     r_extra = np.zeros(N)
     r_extra[NE:NE+nn_stim] = defaultParams.r_stim
@@ -68,21 +68,6 @@ def runNetwork(Be,
     kernelseed = 123
     rng = NumpyRNG(kernelseed, parallel_safe=True)
     
-    '''
-    # conductance-based alpha-synapses neuron model
-    neuron_params_default = \
-    {'C_m': C*1e12,
-      'E_L': Ur*1000.,
-      'E_ex': Ue*1000.,
-      'E_in': Ui*1000.,
-      'I_e': 0.0,
-      'V_m': Ur*1000.,
-      'V_reset': Ureset*1000.,
-      'V_th': Uth*1000.,
-      'g_L': Gl*1e9,
-      't_ref': t_ref*1000.,
-      'tau_syn_ex': tau_e*1000.,
-      'tau_syn_in': tau_i*1000.}'''
     
     nesp = defaultParams.neuron_params_default
     cell_parameters = {
@@ -91,19 +76,7 @@ def runNetwork(Be,
         'v_spike':    0.0 ,     # Spike detection threshold in mV.   https://github.com/nest/nest-simulator/blob/master/models/aeif_cond_alpha.cpp
         'v_reset':    nesp['V_reset'],     # Reset value for V_m after a spike. In mV.
         'v_rest':     nesp['E_L'],     # Resting membrane potential (Leak reversal potential) in mV.
-        
-        
-        
-        
-        
-        'tau_m':      16.8,  # Membrane time constant in ms
-        
-        
-        
-        
-        
-        
-        
+        'tau_m':      nesp['C_m']/nesp['g_L'],  # Membrane time constant in ms = cm/tau_m*1000.0, C_m/g_L
         'i_offset':   nesp['I_e']/1000,     # Offset current in nA
         'a':          0,     # Subthreshold adaptation conductance in nS.
         'b':          0,  # Spike-triggered adaptation in nA
@@ -166,10 +139,14 @@ def runNetwork(Be,
             for segment in spikes.segments:
                 io.write_segment(segment)
                 
-            io = PyNNTextIO(filename="ISN-%s-%s-%i.dat"%(simulator_name, pop.label, rank))
             vs =  pop.get_data('v', gather=False)
             for segment in vs.segments:
-                io.write_segment(segment)
+                for i in range(len(segment.analogsignals[0].transpose())):
+                    filename="ISN-%s-%s-cell%i.dat"%(simulator_name, pop.label, i)
+                    vm = segment.analogsignals[0].transpose()[i]
+                    tt = np.array([t*dt/1000. for t in range(len(vm))])
+                    times_vm = np.array([tt, vm/1000.]).transpose()
+                    np.savetxt(filename, times_vm , delimiter = '\t', fmt='%s')
             
     spike_data = {}
     spike_data['senders'] = []

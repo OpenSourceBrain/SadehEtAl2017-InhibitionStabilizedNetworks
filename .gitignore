@@ -5,3 +5,4 @@
 /SpikingSimulationModels/Figures/*.pdf
 /PyNN/*.dat
 /PyNN/*.gdf
+/SpikingSimulationModels/test/*.dat

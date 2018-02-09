@@ -49,7 +49,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         NE = defaultParams.NE
         NI = defaultParams.NI
 
-        print('\n # -----> size of pert. inh: %; base rate %s; pert rate %s', (nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
+        print('\n # -----> size of pert. inh: %s; base rate %s; pert rate %s'% (nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
 
         r_extra = np.zeros(N)
         r_extra[NE:NE+nn_stim] = defaultParams.r_stim
@@ -234,6 +234,14 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                         colors.append('black')
                     else:
                         colors.append('blue')
+                    
+                    f = open('cell_%i.dat'%i,'w')
+                    for ti in range(len(all_t)):
+                        t = all_t[ti]/1000.
+                        v = all_v[i][ti]/1000.
+                        f.write('%s\t%s\n'%(t,v))
+                    f.close()
+                        
                 print colors
                 #print("Plotting %s traces for %s E cells, %s traces for %s Ip cells, %s traces for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
@@ -273,7 +281,7 @@ if __name__ == '__main__':
 
     if '-small' in sys.argv:
         defaultParams.r_bkg = 9000
-        defaultParams.r_stim = 0
+        defaultParams.r_stim = -9000
 
     for nn_stim in nn_stim_rng:
         runNetwork(Be, Bi, nn_stim, show_gui=show_gui)
