@@ -118,6 +118,10 @@ def _connect_pops_(pre_pop, post_pop, weight, syn_model='static'):
         ww = weight[ii]
         dd = dt + delay_default*np.ones(len(ww))
         nest.DivergentConnect([nn], post_pop, weight=ww.tolist(), delay=dd.tolist())
+    print("  Created %s non zero weight connections from %s to %s, %s"%(np.count_nonzero(weight),_pop_info_(pre_pop), _pop_info_(post_pop), syn_model))
+    
+def _pop_info_(pop):
+    return 'Cells %s->%s (%s total)' %(pop[0],pop[-1],len(pop))
 
 # --- Run the simulation for the duration of T (ms)
 def _run_simulation_(T):

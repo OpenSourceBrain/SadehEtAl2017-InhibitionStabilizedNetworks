@@ -6,3 +6,7 @@
 /PyNN/*.dat
 /PyNN/*.gdf
 /SpikingSimulationModels/test/*.dat
+/PyNN/x86_64
+/PyNN/*.mod
+/PyNN/*.spikes
+/PyNN/LEMS_*.xml

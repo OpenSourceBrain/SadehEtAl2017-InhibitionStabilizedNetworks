@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 import sys
 import numpy as np
 
@@ -47,7 +48,7 @@ def runNetwork(Be,
     rr2 = rr1 + r_extra
     
     
-    rank = setup(timestep=dt, max_delay=defaultParams.delay_default, **extra)
+    rank = setup(timestep=dt, max_delay=defaultParams.delay_default, reference='ISN', **extra)
     
     print("rank =", rank)
     nump = num_processes()
@@ -89,35 +90,72 @@ def runNetwork(Be,
         'tau_syn_I':  nesp['tau_syn_in'],     # Rise time of the inhibitory synaptic conductance in ms (alpha function).
     }
 
-    print("%d Creating excitatory population with %d neurons." % (rank, NE))
+    print("%d Creating population with %d neurons." % (rank, N))
     celltype = EIF_cond_alpha_isfa_ista(**cell_parameters)
     celltype.default_initial_values['v'] = cell_parameters['v_rest'] # Setting default init v, useful for NML2 export
-    E_net = Population(NE, celltype, label="E")
+    EI_pop = Population(N, celltype, label="EI")
+    E_pop = PopulationView(EI_pop, np.array(range(0,NE)),label='E_pop')
+    #print("%d Creating pop view %s." % (rank, E_pop))
+    I_pop = PopulationView(EI_pop, np.array(range(NE,N)),label='I_pop')
+    #print("%d Creating pop view %s." % (rank, I_pop))
+    
+    I_pert_pop = PopulationView(EI_pop, np.array(range(NE,NE+nn_stim)),label='I_pert_pop')
+    I_nonpert_pop = PopulationView(EI_pop, np.array(range(0,NE)+range(NE+nn_stim,N)),label='I_nonpert_pop')
     
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_type = SpikeSourcePoisson(rate=p_rate)
-    expoisson = Population(NE, source_type, label="expoisson")
+    source_typeA = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
+    expoissonA = Population(N, source_typeA, label="pre_pert_stim_all")
+    
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
+    expoissonB = Population(N-nn_stim, source_typeB, label="non_pert_stim")
+    
+    p_rate = defaultParams.r_bkg+defaultParams.r_stim
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
+    expoissonC = Population(nn_stim, source_typeC, label="pert_stim")
     
     
     
     progress_bar = ProgressBar(width=20)
-    #connector = FixedProbabilityConnector(epsilon, rng=rng, callback=progress_bar)
-    #E_syn = StaticSynapse(weight=JE, delay=delay)
+    connector_E = FixedProbabilityConnector(0.15, rng=rng, callback=progress_bar)
+    connector_I = FixedProbabilityConnector(1, rng=rng, callback=progress_bar)
+    
+    EE_syn = StaticSynapse(weight=0.001*Bee, delay=defaultParams.delay_default)
+    EI_syn = StaticSynapse(weight=0.001*Bei, delay=defaultParams.delay_default)
+    II_syn = StaticSynapse(weight=0.001*Bii, delay=defaultParams.delay_default)
+    IE_syn = StaticSynapse(weight=0.001*Bie, delay=defaultParams.delay_default)
+    
     #I_syn = StaticSynapse(weight=JI, delay=delay)
     ext_Connector = OneToOneConnector(callback=progress_bar)
-    ext_syn = StaticSynapse(weight=0.0001, delay=dt)
+    ext_syn_bkg = StaticSynapse(weight=0.001*defaultParams.Be_bkg, delay=defaultParams.delay_default)
+    ext_syn_stim = StaticSynapse(weight=0.001*defaultParams.Be_stim, delay=defaultParams.delay_default)
     
     
-    input_to_E = Projection(expoisson, E_net, ext_Connector, ext_syn, receptor_type="excitatory")
-    print("input --> E\t", len(input_to_E), "connections")
+    E_to_E = Projection(E_pop, E_pop, connector_E, EE_syn, receptor_type="excitatory")
+    print("E --> E\t\t", len(E_to_E), "connections")
+    E_to_I = Projection(E_pop, I_pop, connector_E, EI_syn, receptor_type="excitatory")
+    print("E --> I\t\t", len(E_to_I), "connections")
+    I_to_I = Projection(I_pop, I_pop, connector_I, II_syn, receptor_type="excitatory")
+    print("I --> I\t\t", len(I_to_I), "connections")
+    I_to_E = Projection(I_pop, E_pop, connector_I, IE_syn, receptor_type="excitatory")
+    print("I --> E\t\t", len(I_to_E), "connections")
+    
+    
+    input_A = Projection(expoissonA, EI_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(EI_pop), len(input_A), "connections")
+    input_B = Projection(expoissonB, I_nonpert_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    print("input --> %s cells post pert\t"%len(I_nonpert_pop), len(input_B), "connections")
+    input_C = Projection(expoissonC, I_pert_pop, ext_Connector, ext_syn_stim, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(I_pert_pop), len(input_C), "connections")
     
     
     # Record spikes
     print("%d Setting up recording in excitatory population." % rank)
-    E_net.record('spikes')
+    EI_pop.record('spikes')
     if N_rec_v>0:
-        E_net[0:min(NE,N_rec_v)].record('v')
+        EI_pop[0:min(N,N_rec_v)].record('v')
     
     
     # read out time used for building
@@ -133,7 +171,7 @@ def runNetwork(Be,
     
     # write data to file
     if save and not simulator_name=='neuroml':
-        for pop in [E_net]:
+        for pop in [EI_pop]:
             io = PyNNTextIO(filename="ISN-%s-%s-%i.gdf"%(simulator_name, pop.label, rank))
             spikes =  pop.get_data('spikes', gather=False)
             for segment in spikes.segments:
@@ -152,7 +190,7 @@ def runNetwork(Be,
     spike_data['senders'] = []
     spike_data['times'] = []
     index_offset = 1
-    for pop in [E_net]:
+    for pop in [EI_pop]:
         if rank == 0:
             spikes =  pop.get_data('spikes', gather=False)
             #print(spikes.segments[0].all_data)
@@ -168,25 +206,34 @@ def runNetwork(Be,
                     spike_data['times'].append(s)
             index_offset+=pop.size
 
+
+    print("Build time         : %g s" % buildCPUTime)
+    print("Simulation time    : %g s" % simCPUTime)
+
+    # === Clean up and quit ========================================================
+
+    end()
     
 if __name__ == '__main__':
     
     simulator_name = get_script_args(1)[0]
     
-    Be=0.1
-    Bi=-0.2
-    N_rec_v = 10
+    Be=.1
+    Bi=-.1
+    N_rec_v = 20
     
     if '-small' in sys.argv:
-        size = 20
-        defaultParams.set_total_population_size(20)
+        size = 100
+        defaultParams.set_total_population_size(size)
         N_rec_v = size
     
     nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*defaultParams.NI).astype('int')
     nn_stim_rng = (np.array([.75])*defaultParams.NI).astype('int')
     
     if '-small' in sys.argv:
-        nn_stim_rng = (np.array([0.5])*defaultParams.NI).astype('int')
+        nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')
+        defaultParams.r_bkg = 9000
+        defaultParams.r_stim = -400
 
     if '-nogui' in sys.argv:
         show_gui = False
@@ -194,9 +241,6 @@ if __name__ == '__main__':
         import matplotlib.pyplot as plt 
         show_gui = True 
         
-    
-    defaultParams.r_bkg = 9000
-    defaultParams.r_stim = 00
 
     for nn_stim in nn_stim_rng:
         runNetwork(Be, Bi, nn_stim, show_gui=show_gui, save=True,N_rec_v=N_rec_v)

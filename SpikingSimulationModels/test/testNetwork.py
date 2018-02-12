@@ -1,7 +1,7 @@
 ################################################################################
 # -- Testing the network to facilitate translation to PyNN
 ################################################################################
-
+from __future__ import print_function
 import numpy as np
 import sys
 from imp import reload
@@ -34,12 +34,12 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
 
         Ntrials = 1
         bw = 50.
-        N_max_rec_v = 50
+        N_max_rec_v = 2001
         
         rec_conn={'EtoE':1, 'EtoI':1, 'ItoE':1, 'ItoI':1}
 
         print('####################')
-        print('### (Be, Bi, nn_stim): ', Be, Bi, nn_stim)
+        print('### Be: %s, Bi: %s, nn_stim: %s) '%(Be, Bi, nn_stim))
         print('####################')
         
         Bee, Bei = Be, Be
@@ -93,7 +93,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         # -- recording spike data
         spikes_all = net_tools._recording_spikes_(neurons=all_neurons)
         
-        if N<N_max_rec_v:
+        if N<=N_max_rec_v:
             v_all = net_tools._recording_voltages_(neurons=all_neurons)
 
         # -- background input
@@ -127,7 +127,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         # -- reading out spiking activity
         spd = net_tools._reading_spikes_(spikes_all)
         
-        if N<N_max_rec_v:
+        if N<=N_max_rec_v:
             v_rec = net_tools._reading_voltages_(v_all)
             all_v = {}
             all_t = []
@@ -220,7 +220,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
             plt.title("Histogram of spikes")
             
             
-            if N<N_max_rec_v:
+            if N<=N_max_rec_v:
                 xs = []
                 ys = []
                 colors = []
@@ -242,7 +242,6 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                         f.write('%s\t%s\n'%(t,v))
                     f.close()
                         
-                print colors
                 #print("Plotting %s traces for %s E cells, %s traces for %s Ip cells, %s traces for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
                 pynml.generate_plot(xs,
@@ -261,15 +260,15 @@ if __name__ == '__main__':
     Bi=-0.2
     
     if '-small' in sys.argv:
-        defaultParams.set_total_population_size(20)
-        Be=0
-        Bi=-0
+        defaultParams.set_total_population_size(100)
+        Be=.1
+        Bi=-.1
     
     nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*defaultParams.NI).astype('int')
-    nn_stim_rng = (np.array([0.1,.75])*defaultParams.NI).astype('int')
+    nn_stim_rng = (np.array([.75])*defaultParams.NI).astype('int')
     
     if '-small' in sys.argv:
-        nn_stim_rng = (np.array([0.5])*defaultParams.NI).astype('int')
+        nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')
 
     if '-nogui' in sys.argv:
         show_gui = False
@@ -281,7 +280,7 @@ if __name__ == '__main__':
 
     if '-small' in sys.argv:
         defaultParams.r_bkg = 9000
-        defaultParams.r_stim = -9000
+        defaultParams.r_stim = -400
 
     for nn_stim in nn_stim_rng:
         runNetwork(Be, Bi, nn_stim, show_gui=show_gui)
