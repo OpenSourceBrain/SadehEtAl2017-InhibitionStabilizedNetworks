@@ -10,3 +10,4 @@
 /PyNN/*.mod
 /PyNN/*.spikes
 /PyNN/LEMS_*.xml
+/PyNN/ISN.net.nml
