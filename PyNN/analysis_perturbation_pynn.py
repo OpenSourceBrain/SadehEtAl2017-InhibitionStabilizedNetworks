@@ -14,9 +14,15 @@ Tblank= defaultParams.Tblank
 # simulation time of perturbation (ms)
 Tstim = defaultParams.Tstim
 # time after perturbation
-Tpost =  0 # 500.
+Tpost =  defaultParams.Tpost
 
 T = Ttrans+Tblank+Tstim #+Tpost
+
+
+if '-small' in sys.argv:
+    size = 500
+    defaultParams.set_total_population_size(size)
+
 N = defaultParams.N
 NE = defaultParams.NE
 NI = defaultParams.NI

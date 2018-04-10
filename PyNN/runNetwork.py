@@ -19,7 +19,7 @@ def runNetwork(Be,
                dt = defaultParams.dt, 
                N_rec_v = 5, 
                save=False, 
-               simtime = defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans, 
+               simtime = defaultParams.Tpost+defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans, 
                extra = {}):
     
     exec("from pyNN.%s import *" % simulator_name) in globals()
@@ -44,9 +44,8 @@ def runNetwork(Be,
     r_extra = np.zeros(N)
     r_extra[NE:NE+nn_stim] = defaultParams.r_stim
 
-    rr1 = defaultParams.r_bkg*np.ones(N)
+    rr1 = defaultParams.r_bkg*np.random.uniform(.75,1.25, N)
     rr2 = rr1 + r_extra
-    
     
     rank = setup(timestep=dt, max_delay=defaultParams.delay_default, reference='ISN', **extra)
     
@@ -66,7 +65,7 @@ def runNetwork(Be,
     timer.start()  # start timer on construction
     
     print("%d Setting up random number generator" % rank)
-    kernelseed = 123456
+    kernelseed = 123
     rng = NumpyRNG(kernelseed, parallel_safe=True)
     
     
@@ -113,11 +112,15 @@ def runNetwork(Be,
     
     p_rate = defaultParams.r_bkg+defaultParams.r_stim
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
+    source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank, duration=defaultParams.Tstim)
     expoissonC = Population(nn_stim, source_typeC, label="pert_stim")
+
+    p_rate = defaultParams.r_bkg
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeD = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim)
+    expoissonD = Population(nn_stim, source_typeD, label="pert_poststim")
     
-    
-    
+
     progress_bar = ProgressBar(width=20)
     connector_E = FixedProbabilityConnector(0.15, rng=rng, callback=progress_bar)
     connector_I = FixedProbabilityConnector(1, rng=rng, callback=progress_bar)
@@ -137,9 +140,9 @@ def runNetwork(Be,
     print("E --> E\t\t", len(E_to_E), "connections")
     E_to_I = Projection(E_pop, I_pop, connector_E, EI_syn, receptor_type="excitatory")
     print("E --> I\t\t", len(E_to_I), "connections")
-    I_to_I = Projection(I_pop, I_pop, connector_I, II_syn, receptor_type="excitatory")
+    I_to_I = Projection(I_pop, I_pop, connector_I, II_syn, receptor_type="inhibitory")
     print("I --> I\t\t", len(I_to_I), "connections")
-    I_to_E = Projection(I_pop, E_pop, connector_I, IE_syn, receptor_type="excitatory")
+    I_to_E = Projection(I_pop, E_pop, connector_I, IE_syn, receptor_type="inhibitory")
     print("I --> E\t\t", len(I_to_E), "connections")
     
     
@@ -149,6 +152,8 @@ def runNetwork(Be,
     print("input --> %s cells post pert\t"%len(I_nonpert_pop), len(input_B), "connections")
     input_C = Projection(expoissonC, I_pert_pop, ext_Connector, ext_syn_stim, receptor_type="excitatory")
     print("input --> %s cells pre pert\t"%len(I_pert_pop), len(input_C), "connections")
+    input_D = Projection(expoissonD, I_pert_pop, ext_Connector, ext_syn_stim, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(I_pert_pop), len(input_D), "connections")
     
     
     # Record spikes
@@ -218,15 +223,15 @@ if __name__ == '__main__':
     
     simulator_name = get_script_args(1)[0]
     
-    Be=.1
-    Bi=-.1
+    Be=.4
+    Bi=.5
     N_rec_v = 20
     
     if '-small' in sys.argv:
-        size = 100
+        size = 500
         defaultParams.set_total_population_size(size)
-        N_rec_v = size
-        
+        N_rec_v = 10#size
+    
     fraction_to_stim = 0.75
     if len(sys.argv)==3:
         try:
@@ -237,9 +242,9 @@ if __name__ == '__main__':
     nn_stim_rng = (np.array([fraction_to_stim])*defaultParams.NI).astype('int')
     
     if '-small' in sys.argv:
-        nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')
-        defaultParams.r_bkg = 9000
-        defaultParams.r_stim = -400
+        nn_stim_rng = (np.array([0.95])*defaultParams.NI).astype('int')
+        defaultParams.r_bkg = 9.6e3
+        defaultParams.r_stim = -100
 
     if '-nogui' in sys.argv:
         show_gui = False
