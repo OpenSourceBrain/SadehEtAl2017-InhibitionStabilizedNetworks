@@ -66,7 +66,7 @@ def runNetwork(Be,
     timer.start()  # start timer on construction
     
     print("%d Setting up random number generator" % rank)
-    kernelseed = 123
+    kernelseed = 123456
     rng = NumpyRNG(kernelseed, parallel_safe=True)
     
     
@@ -226,9 +226,15 @@ if __name__ == '__main__':
         size = 100
         defaultParams.set_total_population_size(size)
         N_rec_v = size
-    
-    nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*defaultParams.NI).astype('int')
-    nn_stim_rng = (np.array([.75])*defaultParams.NI).astype('int')
+        
+    fraction_to_stim = 0.75
+    if len(sys.argv)==3:
+        try:
+            fraction_to_stim = float(sys.argv[2])
+        except:
+            pass
+    print("Going to stimulate %s of the inhibitory cells"%fraction_to_stim)
+    nn_stim_rng = (np.array([fraction_to_stim])*defaultParams.NI).astype('int')
     
     if '-small' in sys.argv:
         nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')

@@ -21,7 +21,7 @@ and then
 python analyzeResults.py
 python figureAllSims.py
 ```
-to regenerate analyse network properties across multipole values =of excitation/inhibition (Figure 10 C & D)
+to analyse network properties across multiple values of excitation/inhibition (Figure 10 C & D)
 
 ![Test](test/net.png)
 
