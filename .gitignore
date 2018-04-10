@@ -1,6 +1,6 @@
 /LinearThresholdModels/.DS_Store
 /SpikingSimulationModels/.DS_Store
-/SpikingSimulationModels/SimulationResults/*
+/SpikingSimulationModels/SimulationResults*
 /SpikingSimulationModels/*.pyc
 /SpikingSimulationModels/Figures/*.pdf
 /PyNN/*.dat
@@ -11,3 +11,4 @@
 /PyNN/*.spikes
 /PyNN/LEMS_*.xml
 /PyNN/ISN.net.nml
+/SpikingSimulationModels/__pycache__
