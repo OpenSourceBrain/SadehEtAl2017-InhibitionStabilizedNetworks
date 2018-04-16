@@ -1,5 +1,5 @@
 from neuromllite import Network, Cell, InputSource, Population, Synapse
-from neuromllite import Projection, RandomConnectivity, Input, Simulation, RandomLayout
+from neuromllite import Projection, RandomConnectivity, Input, Simulation, RandomLayout, OneToOneConnector
 from neuromllite.NetworkGenerator import generate_and_run
 from neuromllite.NetworkGenerator import generate_neuroml2_from_network
 import sys
@@ -13,12 +13,13 @@ import defaultParams
 net = Network(id='ISN')
 net.notes = 'Based on network of Sadeh et al. 2017'
 
-net.parameters = { 'N': 10, 
+net.parameters = { 'N': 100, 
                    'fraction_E': 0.8,
                    'fraction_stimulated': .75,
                    'Be': .4,
                    'Bi': .5,
-                   'bkg_rate': 960}
+                   'Be_bkg':defaultParams.Be_bkg,
+                   'bkg_rate': 9600}
 
 cell = Cell(id='eifcell', pynn_cell='EIF_cond_alpha_isfa_ista')
 
@@ -57,7 +58,7 @@ net.cells.append(ssp_pre)
 pE = Population(id='Epop', size='int(N*fraction_E)', component=cell.id, properties={'color':'0 0 0.8'})
 pI = Population(id='Ipop', size='N - int(N*fraction_E)', component=cell.id, properties={'color':'.8 0 0'})
 
-bkgPre = Population(id='Background_pre', size='N', component=ssp_pre.id, properties={'color':'.8 .8 .8'})
+bkgPre = Population(id='Background_pre', size='int(N*fraction_E)', component=ssp_pre.id, properties={'color':'.8 .8 .8'})
 
 net.populations.append(pE)
 net.populations.append(pI)
@@ -80,32 +81,40 @@ net.projections.append(Projection(id='projBkgPre',
                                   postsynaptic=pE.id,
                                   synapse='ampa',
                                   delay=2,
-                                  weight=0.02,
-                                  random_connectivity=RandomConnectivity(probability=1)))
-'''
+                                  weight='0.001*Be_bkg',
+                                  one_to_one_connector=OneToOneConnector()))
+
 net.projections.append(Projection(id='projEe',
                                   presynaptic=pE.id, 
                                   postsynaptic=pE.id,
                                   synapse='ampa',
                                   delay=2,
-                                  weight=0.02,
-                                  random_connectivity=RandomConnectivity(probability=.05)))
+                                  weight='0.001*Be',
+                                  random_connectivity=RandomConnectivity(probability=0.15)))
                                   
 net.projections.append(Projection(id='projEI',
                                   presynaptic=pE.id, 
                                   postsynaptic=pI.id,
                                   synapse='ampa',
                                   delay=2,
-                                  weight=0.02,
-                                  random_connectivity=RandomConnectivity(probability=.05)))
+                                  weight='0.001*Be',
+                                  random_connectivity=RandomConnectivity(probability=0.15)))
 
 net.projections.append(Projection(id='projIE',
                                   presynaptic=pI.id, 
                                   postsynaptic=pE.id,
                                   synapse='gaba',
                                   delay=2,
-                                  weight=0.02,
-                                  random_connectivity=RandomConnectivity(probability=.05)))'''
+                                  weight='0.001*Bi',
+                                  random_connectivity=RandomConnectivity(probability=1)))
+
+net.projections.append(Projection(id='projII',
+                                  presynaptic=pI.id, 
+                                  postsynaptic=pI.id,
+                                  synapse='gaba',
+                                  delay=2,
+                                  weight='0.001*Bi',
+                                  random_connectivity=RandomConnectivity(probability=1)))
 
 
 print(net)

@@ -4,10 +4,11 @@
         "parameters": {
             "fraction_E": 0.8, 
             "Be": 0.4, 
+            "Be_bkg": 0.1, 
             "Bi": 0.5, 
-            "N": 10, 
+            "N": 100, 
             "fraction_stimulated": 0.75, 
-            "bkg_rate": 960
+            "bkg_rate": 9600
         }, 
         "notes": "Based on network of Sadeh et al. 2017", 
         "cells": [
@@ -98,7 +99,7 @@
             }, 
             {
                 "Background_pre": {
-                    "size": "N", 
+                    "size": "int(N*fraction_E)", 
                     "component": "ssp_pre", 
                     "properties": {
                         "color": ".8 .8 .8"
@@ -117,8 +118,54 @@
                     "presynaptic": "Background_pre", 
                     "postsynaptic": "Epop", 
                     "synapse": "ampa", 
-                    "delay": 2.0, 
-                    "weight": 0.02, 
+                    "delay": 2, 
+                    "weight": "0.001*Be_bkg", 
+                    "one_to_one_connector": {}
+                }
+            }, 
+            {
+                "projEe": {
+                    "presynaptic": "Epop", 
+                    "postsynaptic": "Epop", 
+                    "synapse": "ampa", 
+                    "delay": 2, 
+                    "weight": "0.001*Be", 
+                    "random_connectivity": {
+                        "probability": 0.15
+                    }
+                }
+            }, 
+            {
+                "projEI": {
+                    "presynaptic": "Epop", 
+                    "postsynaptic": "Ipop", 
+                    "synapse": "ampa", 
+                    "delay": 2, 
+                    "weight": "0.001*Be", 
+                    "random_connectivity": {
+                        "probability": 0.15
+                    }
+                }
+            }, 
+            {
+                "projIE": {
+                    "presynaptic": "Ipop", 
+                    "postsynaptic": "Epop", 
+                    "synapse": "gaba", 
+                    "delay": 2, 
+                    "weight": "0.001*Bi", 
+                    "random_connectivity": {
+                        "probability": 1.0
+                    }
+                }
+            }, 
+            {
+                "projII": {
+                    "presynaptic": "Ipop", 
+                    "postsynaptic": "Ipop", 
+                    "synapse": "gaba", 
+                    "delay": 2, 
+                    "weight": "0.001*Bi", 
                     "random_connectivity": {
                         "probability": 1.0
                     }

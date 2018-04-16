@@ -28,11 +28,101 @@
             <Line id="Epop[5]: v" quantity="Epop/5/eifcell/v" scale="1mV" color="#3193ca" timeScale="1ms"/>
             <Line id="Epop[6]: v" quantity="Epop/6/eifcell/v" scale="1mV" color="#90e5e9" timeScale="1ms"/>
             <Line id="Epop[7]: v" quantity="Epop/7/eifcell/v" scale="1mV" color="#29645f" timeScale="1ms"/>
+            <Line id="Epop[8]: v" quantity="Epop/8/eifcell/v" scale="1mV" color="#1fcff4" timeScale="1ms"/>
+            <Line id="Epop[9]: v" quantity="Epop/9/eifcell/v" scale="1mV" color="#6ed4e9" timeScale="1ms"/>
+            <Line id="Epop[10]: v" quantity="Epop/10/eifcell/v" scale="1mV" color="#8fe460" timeScale="1ms"/>
+            <Line id="Epop[11]: v" quantity="Epop/11/eifcell/v" scale="1mV" color="#2ca1c7" timeScale="1ms"/>
+            <Line id="Epop[12]: v" quantity="Epop/12/eifcell/v" scale="1mV" color="#8d9fe5" timeScale="1ms"/>
+            <Line id="Epop[13]: v" quantity="Epop/13/eifcell/v" scale="1mV" color="#5adad1" timeScale="1ms"/>
+            <Line id="Epop[14]: v" quantity="Epop/14/eifcell/v" scale="1mV" color="#f543bb" timeScale="1ms"/>
+            <Line id="Epop[15]: v" quantity="Epop/15/eifcell/v" scale="1mV" color="#175f0c" timeScale="1ms"/>
+            <Line id="Epop[16]: v" quantity="Epop/16/eifcell/v" scale="1mV" color="#fa8826" timeScale="1ms"/>
+            <Line id="Epop[17]: v" quantity="Epop/17/eifcell/v" scale="1mV" color="#6980a8" timeScale="1ms"/>
+            <Line id="Epop[18]: v" quantity="Epop/18/eifcell/v" scale="1mV" color="#8101e8" timeScale="1ms"/>
+            <Line id="Epop[19]: v" quantity="Epop/19/eifcell/v" scale="1mV" color="#25ece8" timeScale="1ms"/>
+            <Line id="Epop[20]: v" quantity="Epop/20/eifcell/v" scale="1mV" color="#b80e3b" timeScale="1ms"/>
+            <Line id="Epop[21]: v" quantity="Epop/21/eifcell/v" scale="1mV" color="#30a1f6" timeScale="1ms"/>
+            <Line id="Epop[22]: v" quantity="Epop/22/eifcell/v" scale="1mV" color="#577081" timeScale="1ms"/>
+            <Line id="Epop[23]: v" quantity="Epop/23/eifcell/v" scale="1mV" color="#06057c" timeScale="1ms"/>
+            <Line id="Epop[24]: v" quantity="Epop/24/eifcell/v" scale="1mV" color="#56eaa3" timeScale="1ms"/>
+            <Line id="Epop[25]: v" quantity="Epop/25/eifcell/v" scale="1mV" color="#f7acee" timeScale="1ms"/>
+            <Line id="Epop[26]: v" quantity="Epop/26/eifcell/v" scale="1mV" color="#fa9289" timeScale="1ms"/>
+            <Line id="Epop[27]: v" quantity="Epop/27/eifcell/v" scale="1mV" color="#be9985" timeScale="1ms"/>
+            <Line id="Epop[28]: v" quantity="Epop/28/eifcell/v" scale="1mV" color="#00e266" timeScale="1ms"/>
+            <Line id="Epop[29]: v" quantity="Epop/29/eifcell/v" scale="1mV" color="#f0b378" timeScale="1ms"/>
+            <Line id="Epop[30]: v" quantity="Epop/30/eifcell/v" scale="1mV" color="#deea95" timeScale="1ms"/>
+            <Line id="Epop[31]: v" quantity="Epop/31/eifcell/v" scale="1mV" color="#c55566" timeScale="1ms"/>
+            <Line id="Epop[32]: v" quantity="Epop/32/eifcell/v" scale="1mV" color="#2dcaab" timeScale="1ms"/>
+            <Line id="Epop[33]: v" quantity="Epop/33/eifcell/v" scale="1mV" color="#1978ce" timeScale="1ms"/>
+            <Line id="Epop[34]: v" quantity="Epop/34/eifcell/v" scale="1mV" color="#6a1ecc" timeScale="1ms"/>
+            <Line id="Epop[35]: v" quantity="Epop/35/eifcell/v" scale="1mV" color="#e2b284" timeScale="1ms"/>
+            <Line id="Epop[36]: v" quantity="Epop/36/eifcell/v" scale="1mV" color="#93fd72" timeScale="1ms"/>
+            <Line id="Epop[37]: v" quantity="Epop/37/eifcell/v" scale="1mV" color="#bc90a6" timeScale="1ms"/>
+            <Line id="Epop[38]: v" quantity="Epop/38/eifcell/v" scale="1mV" color="#3b8d0e" timeScale="1ms"/>
+            <Line id="Epop[39]: v" quantity="Epop/39/eifcell/v" scale="1mV" color="#860a7d" timeScale="1ms"/>
+            <Line id="Epop[40]: v" quantity="Epop/40/eifcell/v" scale="1mV" color="#b59a59" timeScale="1ms"/>
+            <Line id="Epop[41]: v" quantity="Epop/41/eifcell/v" scale="1mV" color="#d32851" timeScale="1ms"/>
+            <Line id="Epop[42]: v" quantity="Epop/42/eifcell/v" scale="1mV" color="#ce9fb6" timeScale="1ms"/>
+            <Line id="Epop[43]: v" quantity="Epop/43/eifcell/v" scale="1mV" color="#3b788b" timeScale="1ms"/>
+            <Line id="Epop[44]: v" quantity="Epop/44/eifcell/v" scale="1mV" color="#df8960" timeScale="1ms"/>
+            <Line id="Epop[45]: v" quantity="Epop/45/eifcell/v" scale="1mV" color="#3764b5" timeScale="1ms"/>
+            <Line id="Epop[46]: v" quantity="Epop/46/eifcell/v" scale="1mV" color="#cd4944" timeScale="1ms"/>
+            <Line id="Epop[47]: v" quantity="Epop/47/eifcell/v" scale="1mV" color="#8e1a11" timeScale="1ms"/>
+            <Line id="Epop[48]: v" quantity="Epop/48/eifcell/v" scale="1mV" color="#2f9272" timeScale="1ms"/>
+            <Line id="Epop[49]: v" quantity="Epop/49/eifcell/v" scale="1mV" color="#96af0d" timeScale="1ms"/>
+            <Line id="Epop[50]: v" quantity="Epop/50/eifcell/v" scale="1mV" color="#84ab56" timeScale="1ms"/>
+            <Line id="Epop[51]: v" quantity="Epop/51/eifcell/v" scale="1mV" color="#f56ae7" timeScale="1ms"/>
+            <Line id="Epop[52]: v" quantity="Epop/52/eifcell/v" scale="1mV" color="#0aa250" timeScale="1ms"/>
+            <Line id="Epop[53]: v" quantity="Epop/53/eifcell/v" scale="1mV" color="#2a04f7" timeScale="1ms"/>
+            <Line id="Epop[54]: v" quantity="Epop/54/eifcell/v" scale="1mV" color="#fbb911" timeScale="1ms"/>
+            <Line id="Epop[55]: v" quantity="Epop/55/eifcell/v" scale="1mV" color="#d50b61" timeScale="1ms"/>
+            <Line id="Epop[56]: v" quantity="Epop/56/eifcell/v" scale="1mV" color="#267841" timeScale="1ms"/>
+            <Line id="Epop[57]: v" quantity="Epop/57/eifcell/v" scale="1mV" color="#3aa725" timeScale="1ms"/>
+            <Line id="Epop[58]: v" quantity="Epop/58/eifcell/v" scale="1mV" color="#8a04f7" timeScale="1ms"/>
+            <Line id="Epop[59]: v" quantity="Epop/59/eifcell/v" scale="1mV" color="#282fe5" timeScale="1ms"/>
+            <Line id="Epop[60]: v" quantity="Epop/60/eifcell/v" scale="1mV" color="#52e1fb" timeScale="1ms"/>
+            <Line id="Epop[61]: v" quantity="Epop/61/eifcell/v" scale="1mV" color="#0ca02f" timeScale="1ms"/>
+            <Line id="Epop[62]: v" quantity="Epop/62/eifcell/v" scale="1mV" color="#b6307b" timeScale="1ms"/>
+            <Line id="Epop[63]: v" quantity="Epop/63/eifcell/v" scale="1mV" color="#141cb0" timeScale="1ms"/>
+            <Line id="Epop[64]: v" quantity="Epop/64/eifcell/v" scale="1mV" color="#fe9e62" timeScale="1ms"/>
+            <Line id="Epop[65]: v" quantity="Epop/65/eifcell/v" scale="1mV" color="#ebaa77" timeScale="1ms"/>
+            <Line id="Epop[66]: v" quantity="Epop/66/eifcell/v" scale="1mV" color="#c9f0b0" timeScale="1ms"/>
+            <Line id="Epop[67]: v" quantity="Epop/67/eifcell/v" scale="1mV" color="#c5bc64" timeScale="1ms"/>
+            <Line id="Epop[68]: v" quantity="Epop/68/eifcell/v" scale="1mV" color="#5e2503" timeScale="1ms"/>
+            <Line id="Epop[69]: v" quantity="Epop/69/eifcell/v" scale="1mV" color="#adbfb0" timeScale="1ms"/>
+            <Line id="Epop[70]: v" quantity="Epop/70/eifcell/v" scale="1mV" color="#c2e1da" timeScale="1ms"/>
+            <Line id="Epop[71]: v" quantity="Epop/71/eifcell/v" scale="1mV" color="#7b1427" timeScale="1ms"/>
+            <Line id="Epop[72]: v" quantity="Epop/72/eifcell/v" scale="1mV" color="#0fc01b" timeScale="1ms"/>
+            <Line id="Epop[73]: v" quantity="Epop/73/eifcell/v" scale="1mV" color="#a04859" timeScale="1ms"/>
+            <Line id="Epop[74]: v" quantity="Epop/74/eifcell/v" scale="1mV" color="#53650f" timeScale="1ms"/>
+            <Line id="Epop[75]: v" quantity="Epop/75/eifcell/v" scale="1mV" color="#9c2ecc" timeScale="1ms"/>
+            <Line id="Epop[76]: v" quantity="Epop/76/eifcell/v" scale="1mV" color="#6bbb69" timeScale="1ms"/>
+            <Line id="Epop[77]: v" quantity="Epop/77/eifcell/v" scale="1mV" color="#f3d90e" timeScale="1ms"/>
+            <Line id="Epop[78]: v" quantity="Epop/78/eifcell/v" scale="1mV" color="#339bb4" timeScale="1ms"/>
+            <Line id="Epop[79]: v" quantity="Epop/79/eifcell/v" scale="1mV" color="#c4d3c5" timeScale="1ms"/>
         </Display>
         
         <Display id="DispPop__Ipop" title="Membrane potentials of cells in Ipop" timeScale="1ms" xmin="-100.0" xmax="1100.0" ymin="-90" ymax="50">
-            <Line id="Ipop[0]: v" quantity="Ipop/0/eifcell/v" scale="1mV" color="#1fcff4" timeScale="1ms"/>
-            <Line id="Ipop[1]: v" quantity="Ipop/1/eifcell/v" scale="1mV" color="#6ed4e9" timeScale="1ms"/>
+            <Line id="Ipop[0]: v" quantity="Ipop/0/eifcell/v" scale="1mV" color="#b2d4f3" timeScale="1ms"/>
+            <Line id="Ipop[1]: v" quantity="Ipop/1/eifcell/v" scale="1mV" color="#8e7ae9" timeScale="1ms"/>
+            <Line id="Ipop[2]: v" quantity="Ipop/2/eifcell/v" scale="1mV" color="#147de9" timeScale="1ms"/>
+            <Line id="Ipop[3]: v" quantity="Ipop/3/eifcell/v" scale="1mV" color="#2a3a46" timeScale="1ms"/>
+            <Line id="Ipop[4]: v" quantity="Ipop/4/eifcell/v" scale="1mV" color="#f79fca" timeScale="1ms"/>
+            <Line id="Ipop[5]: v" quantity="Ipop/5/eifcell/v" scale="1mV" color="#3b0b63" timeScale="1ms"/>
+            <Line id="Ipop[6]: v" quantity="Ipop/6/eifcell/v" scale="1mV" color="#29ddf4" timeScale="1ms"/>
+            <Line id="Ipop[7]: v" quantity="Ipop/7/eifcell/v" scale="1mV" color="#49cdbe" timeScale="1ms"/>
+            <Line id="Ipop[8]: v" quantity="Ipop/8/eifcell/v" scale="1mV" color="#8980bb" timeScale="1ms"/>
+            <Line id="Ipop[9]: v" quantity="Ipop/9/eifcell/v" scale="1mV" color="#850561" timeScale="1ms"/>
+            <Line id="Ipop[10]: v" quantity="Ipop/10/eifcell/v" scale="1mV" color="#00da5a" timeScale="1ms"/>
+            <Line id="Ipop[11]: v" quantity="Ipop/11/eifcell/v" scale="1mV" color="#00d0ba" timeScale="1ms"/>
+            <Line id="Ipop[12]: v" quantity="Ipop/12/eifcell/v" scale="1mV" color="#7efe36" timeScale="1ms"/>
+            <Line id="Ipop[13]: v" quantity="Ipop/13/eifcell/v" scale="1mV" color="#2f529f" timeScale="1ms"/>
+            <Line id="Ipop[14]: v" quantity="Ipop/14/eifcell/v" scale="1mV" color="#9b852c" timeScale="1ms"/>
+            <Line id="Ipop[15]: v" quantity="Ipop/15/eifcell/v" scale="1mV" color="#cc6812" timeScale="1ms"/>
+            <Line id="Ipop[16]: v" quantity="Ipop/16/eifcell/v" scale="1mV" color="#188b26" timeScale="1ms"/>
+            <Line id="Ipop[17]: v" quantity="Ipop/17/eifcell/v" scale="1mV" color="#8152a2" timeScale="1ms"/>
+            <Line id="Ipop[18]: v" quantity="Ipop/18/eifcell/v" scale="1mV" color="#67f8ab" timeScale="1ms"/>
+            <Line id="Ipop[19]: v" quantity="Ipop/19/eifcell/v" scale="1mV" color="#ca5b25" timeScale="1ms"/>
         </Display>
         
         <OutputFile id="Volts_file__Epop" fileName="SimISN.Epop.v.dat">
@@ -44,11 +134,101 @@
             <OutputColumn id="v_Epop_5_eifcell_v" quantity="Epop/5/eifcell/v"/> 
             <OutputColumn id="v_Epop_6_eifcell_v" quantity="Epop/6/eifcell/v"/> 
             <OutputColumn id="v_Epop_7_eifcell_v" quantity="Epop/7/eifcell/v"/> 
+            <OutputColumn id="v_Epop_8_eifcell_v" quantity="Epop/8/eifcell/v"/> 
+            <OutputColumn id="v_Epop_9_eifcell_v" quantity="Epop/9/eifcell/v"/> 
+            <OutputColumn id="v_Epop_10_eifcell_v" quantity="Epop/10/eifcell/v"/> 
+            <OutputColumn id="v_Epop_11_eifcell_v" quantity="Epop/11/eifcell/v"/> 
+            <OutputColumn id="v_Epop_12_eifcell_v" quantity="Epop/12/eifcell/v"/> 
+            <OutputColumn id="v_Epop_13_eifcell_v" quantity="Epop/13/eifcell/v"/> 
+            <OutputColumn id="v_Epop_14_eifcell_v" quantity="Epop/14/eifcell/v"/> 
+            <OutputColumn id="v_Epop_15_eifcell_v" quantity="Epop/15/eifcell/v"/> 
+            <OutputColumn id="v_Epop_16_eifcell_v" quantity="Epop/16/eifcell/v"/> 
+            <OutputColumn id="v_Epop_17_eifcell_v" quantity="Epop/17/eifcell/v"/> 
+            <OutputColumn id="v_Epop_18_eifcell_v" quantity="Epop/18/eifcell/v"/> 
+            <OutputColumn id="v_Epop_19_eifcell_v" quantity="Epop/19/eifcell/v"/> 
+            <OutputColumn id="v_Epop_20_eifcell_v" quantity="Epop/20/eifcell/v"/> 
+            <OutputColumn id="v_Epop_21_eifcell_v" quantity="Epop/21/eifcell/v"/> 
+            <OutputColumn id="v_Epop_22_eifcell_v" quantity="Epop/22/eifcell/v"/> 
+            <OutputColumn id="v_Epop_23_eifcell_v" quantity="Epop/23/eifcell/v"/> 
+            <OutputColumn id="v_Epop_24_eifcell_v" quantity="Epop/24/eifcell/v"/> 
+            <OutputColumn id="v_Epop_25_eifcell_v" quantity="Epop/25/eifcell/v"/> 
+            <OutputColumn id="v_Epop_26_eifcell_v" quantity="Epop/26/eifcell/v"/> 
+            <OutputColumn id="v_Epop_27_eifcell_v" quantity="Epop/27/eifcell/v"/> 
+            <OutputColumn id="v_Epop_28_eifcell_v" quantity="Epop/28/eifcell/v"/> 
+            <OutputColumn id="v_Epop_29_eifcell_v" quantity="Epop/29/eifcell/v"/> 
+            <OutputColumn id="v_Epop_30_eifcell_v" quantity="Epop/30/eifcell/v"/> 
+            <OutputColumn id="v_Epop_31_eifcell_v" quantity="Epop/31/eifcell/v"/> 
+            <OutputColumn id="v_Epop_32_eifcell_v" quantity="Epop/32/eifcell/v"/> 
+            <OutputColumn id="v_Epop_33_eifcell_v" quantity="Epop/33/eifcell/v"/> 
+            <OutputColumn id="v_Epop_34_eifcell_v" quantity="Epop/34/eifcell/v"/> 
+            <OutputColumn id="v_Epop_35_eifcell_v" quantity="Epop/35/eifcell/v"/> 
+            <OutputColumn id="v_Epop_36_eifcell_v" quantity="Epop/36/eifcell/v"/> 
+            <OutputColumn id="v_Epop_37_eifcell_v" quantity="Epop/37/eifcell/v"/> 
+            <OutputColumn id="v_Epop_38_eifcell_v" quantity="Epop/38/eifcell/v"/> 
+            <OutputColumn id="v_Epop_39_eifcell_v" quantity="Epop/39/eifcell/v"/> 
+            <OutputColumn id="v_Epop_40_eifcell_v" quantity="Epop/40/eifcell/v"/> 
+            <OutputColumn id="v_Epop_41_eifcell_v" quantity="Epop/41/eifcell/v"/> 
+            <OutputColumn id="v_Epop_42_eifcell_v" quantity="Epop/42/eifcell/v"/> 
+            <OutputColumn id="v_Epop_43_eifcell_v" quantity="Epop/43/eifcell/v"/> 
+            <OutputColumn id="v_Epop_44_eifcell_v" quantity="Epop/44/eifcell/v"/> 
+            <OutputColumn id="v_Epop_45_eifcell_v" quantity="Epop/45/eifcell/v"/> 
+            <OutputColumn id="v_Epop_46_eifcell_v" quantity="Epop/46/eifcell/v"/> 
+            <OutputColumn id="v_Epop_47_eifcell_v" quantity="Epop/47/eifcell/v"/> 
+            <OutputColumn id="v_Epop_48_eifcell_v" quantity="Epop/48/eifcell/v"/> 
+            <OutputColumn id="v_Epop_49_eifcell_v" quantity="Epop/49/eifcell/v"/> 
+            <OutputColumn id="v_Epop_50_eifcell_v" quantity="Epop/50/eifcell/v"/> 
+            <OutputColumn id="v_Epop_51_eifcell_v" quantity="Epop/51/eifcell/v"/> 
+            <OutputColumn id="v_Epop_52_eifcell_v" quantity="Epop/52/eifcell/v"/> 
+            <OutputColumn id="v_Epop_53_eifcell_v" quantity="Epop/53/eifcell/v"/> 
+            <OutputColumn id="v_Epop_54_eifcell_v" quantity="Epop/54/eifcell/v"/> 
+            <OutputColumn id="v_Epop_55_eifcell_v" quantity="Epop/55/eifcell/v"/> 
+            <OutputColumn id="v_Epop_56_eifcell_v" quantity="Epop/56/eifcell/v"/> 
+            <OutputColumn id="v_Epop_57_eifcell_v" quantity="Epop/57/eifcell/v"/> 
+            <OutputColumn id="v_Epop_58_eifcell_v" quantity="Epop/58/eifcell/v"/> 
+            <OutputColumn id="v_Epop_59_eifcell_v" quantity="Epop/59/eifcell/v"/> 
+            <OutputColumn id="v_Epop_60_eifcell_v" quantity="Epop/60/eifcell/v"/> 
+            <OutputColumn id="v_Epop_61_eifcell_v" quantity="Epop/61/eifcell/v"/> 
+            <OutputColumn id="v_Epop_62_eifcell_v" quantity="Epop/62/eifcell/v"/> 
+            <OutputColumn id="v_Epop_63_eifcell_v" quantity="Epop/63/eifcell/v"/> 
+            <OutputColumn id="v_Epop_64_eifcell_v" quantity="Epop/64/eifcell/v"/> 
+            <OutputColumn id="v_Epop_65_eifcell_v" quantity="Epop/65/eifcell/v"/> 
+            <OutputColumn id="v_Epop_66_eifcell_v" quantity="Epop/66/eifcell/v"/> 
+            <OutputColumn id="v_Epop_67_eifcell_v" quantity="Epop/67/eifcell/v"/> 
+            <OutputColumn id="v_Epop_68_eifcell_v" quantity="Epop/68/eifcell/v"/> 
+            <OutputColumn id="v_Epop_69_eifcell_v" quantity="Epop/69/eifcell/v"/> 
+            <OutputColumn id="v_Epop_70_eifcell_v" quantity="Epop/70/eifcell/v"/> 
+            <OutputColumn id="v_Epop_71_eifcell_v" quantity="Epop/71/eifcell/v"/> 
+            <OutputColumn id="v_Epop_72_eifcell_v" quantity="Epop/72/eifcell/v"/> 
+            <OutputColumn id="v_Epop_73_eifcell_v" quantity="Epop/73/eifcell/v"/> 
+            <OutputColumn id="v_Epop_74_eifcell_v" quantity="Epop/74/eifcell/v"/> 
+            <OutputColumn id="v_Epop_75_eifcell_v" quantity="Epop/75/eifcell/v"/> 
+            <OutputColumn id="v_Epop_76_eifcell_v" quantity="Epop/76/eifcell/v"/> 
+            <OutputColumn id="v_Epop_77_eifcell_v" quantity="Epop/77/eifcell/v"/> 
+            <OutputColumn id="v_Epop_78_eifcell_v" quantity="Epop/78/eifcell/v"/> 
+            <OutputColumn id="v_Epop_79_eifcell_v" quantity="Epop/79/eifcell/v"/> 
         </OutputFile>
         
         <OutputFile id="Volts_file__Ipop" fileName="SimISN.Ipop.v.dat">
             <OutputColumn id="v_Ipop_0_eifcell_v" quantity="Ipop/0/eifcell/v"/> 
             <OutputColumn id="v_Ipop_1_eifcell_v" quantity="Ipop/1/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_2_eifcell_v" quantity="Ipop/2/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_3_eifcell_v" quantity="Ipop/3/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_4_eifcell_v" quantity="Ipop/4/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_5_eifcell_v" quantity="Ipop/5/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_6_eifcell_v" quantity="Ipop/6/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_7_eifcell_v" quantity="Ipop/7/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_8_eifcell_v" quantity="Ipop/8/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_9_eifcell_v" quantity="Ipop/9/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_10_eifcell_v" quantity="Ipop/10/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_11_eifcell_v" quantity="Ipop/11/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_12_eifcell_v" quantity="Ipop/12/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_13_eifcell_v" quantity="Ipop/13/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_14_eifcell_v" quantity="Ipop/14/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_15_eifcell_v" quantity="Ipop/15/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_16_eifcell_v" quantity="Ipop/16/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_17_eifcell_v" quantity="Ipop/17/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_18_eifcell_v" quantity="Ipop/18/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_19_eifcell_v" quantity="Ipop/19/eifcell/v"/> 
         </OutputFile>
         
     </Simulation>
