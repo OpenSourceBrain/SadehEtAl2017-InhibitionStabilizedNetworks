@@ -1,0 +1,10 @@
+{
+    "SimISN": {
+        "duration": 1000.0, 
+        "dt": 0.025, 
+        "recordTraces": {
+            "Epop": "*", 
+            "Ipop": "*"
+        }
+    }
+}

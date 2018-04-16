@@ -1,0 +1,161 @@
+<neuroml xmlns="http://www.neuroml.org/schema/neuroml2"  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.neuroml.org/schema/neuroml2 https://raw.github.com/NeuroML/NeuroML2/development/Schemas/NeuroML2/NeuroML_v2beta5.xsd" id="ISN">
+    <notes>Generated network</notes>
+    <EIF_cond_alpha_isfa_ista id="eifcell" cm="0.12" i_offset="0." tau_syn_E="2." tau_syn_I="1." v_init="-70.599999999999994" tau_m="16.800000000000001" tau_refrac="2." v_reset="-60." v_rest="-70." v_thresh="-50." e_rev_E="-10." e_rev_I="-75." a="0." b="0." delta_T="2." tau_w="144." v_spike="0."/>
+    <alphaCondSynapse id="ampa" tau_syn="2." e_rev="-10."/>
+    <alphaCondSynapse id="gaba" tau_syn="10." e_rev="-80."/>
+    <SpikeSourcePoisson id="ssp_pre" start="0.0ms" duration="650.0ms" rate="960.0Hz"/>
+    <network id="ISN">
+        <notes>Based on network of Sadeh et al. 2017</notes>
+        <population id="Epop" component="eifcell" size="8" type="populationList">
+            <property tag="color" value="0 0 0.8"/>
+            <instance id="0">
+                <location x="966.453535692138757" y="44.073259917535268" z="7.491470058587191"/>
+            </instance>
+            <instance id="1">
+                <location x="910.975962449124154" y="93.926899736376399" z="582.227573058949133"/>
+            </instance>
+            <instance id="2">
+                <location x="671.563481487985086" y="8.393822683708397" z="766.480932791796249"/>
+            </instance>
+            <instance id="3">
+                <location x="236.809775363117751" y="3.081402172660996" z="788.772717236283484"/>
+            </instance>
+            <instance id="4">
+                <location x="346.088965597123092" y="62.328147503916853" z="615.815695103615212"/>
+            </instance>
+            <instance id="5">
+                <location x="148.55463870828757" y="18.309064740993165" z="114.412969688687639"/>
+            </instance>
+            <instance id="6">
+                <location x="14.618780486909122" y="48.675154060475833" z="964.901560916215658"/>
+            </instance>
+            <instance id="7">
+                <location x="64.562280977186077" y="54.108818555113025" z="465.898559008309576"/>
+            </instance>
+        </population>
+        <population id="Ipop" component="eifcell" size="2" type="populationList">
+            <property tag="color" value=".8 0 0"/>
+            <instance id="0">
+                <location x="601.463449561051448" y="8.892882999066231" z="579.002686187366521"/>
+            </instance>
+            <instance id="1">
+                <location x="269.585503819448263" y="55.643256055621556" z="644.634234178282668"/>
+            </instance>
+        </population>
+        <population id="Background_pre" component="ssp_pre" size="10" type="populationList">
+            <property tag="color" value=".8 .8 .8"/>
+            <instance id="0">
+                <location x="481.036371366518438" y="35.523914744298338" z="249.152121361208998"/>
+            </instance>
+            <instance id="1">
+                <location x="933.515498042346735" y="45.338801947649351" z="530.161206911590284"/>
+            </instance>
+            <instance id="2">
+                <location x="19.299566309716852" y="50.810192577979215" z="5.780237417743139"/>
+            </instance>
+            <instance id="3">
+                <location x="143.768427595595369" y="47.282692534740633" z="377.347440772596428"/>
+            </instance>
+            <instance id="4">
+                <location x="54.175198646142839" y="58.752850813106939" z="164.003223741961193"/>
+            </instance>
+            <instance id="5">
+                <location x="557.330237441468171" y="14.424572160190829" z="937.307084696224706"/>
+            </instance>
+            <instance id="6">
+                <location x="770.979971519774949" y="95.693312234940535" z="141.227764416499525"/>
+            </instance>
+            <instance id="7">
+                <location x="305.392708287698611" y="3.958962422796164" z="276.783694791692085"/>
+            </instance>
+            <instance id="8">
+                <location x="806.512505115603744" y="17.7343035278254" z="154.570514710789638"/>
+            </instance>
+            <instance id="9">
+                <location x="954.718655702394926" y="15.4551400089043" z="833.889294151231752"/>
+            </instance>
+        </population>
+        <projection id="projBkgPre" presynapticPopulation="Background_pre" postsynapticPopulation="Epop" synapse="ampa">
+            <connectionWD id="0" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="1" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="2" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="3" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="4" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="5" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="6" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="7" preCellId="../Background_pre/0/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="8" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="9" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="10" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="11" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="12" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="13" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="14" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="15" preCellId="../Background_pre/1/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="16" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="17" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="18" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="19" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="20" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="21" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="22" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="23" preCellId="../Background_pre/2/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="24" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="25" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="26" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="27" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="28" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="29" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="30" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="31" preCellId="../Background_pre/3/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="32" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="33" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="34" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="35" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="36" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="37" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="38" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="39" preCellId="../Background_pre/4/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="40" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="41" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="42" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="43" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="44" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="45" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="46" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="47" preCellId="../Background_pre/5/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="48" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="49" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="50" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="51" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="52" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="53" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="54" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="55" preCellId="../Background_pre/6/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="56" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="57" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="58" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="59" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="60" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="61" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="62" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="63" preCellId="../Background_pre/7/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="64" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="65" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="66" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="67" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="68" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="69" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="70" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="71" preCellId="../Background_pre/8/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="72" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/0/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="73" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/1/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="74" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/2/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="75" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/3/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="76" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/4/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="77" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/5/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="78" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/6/eifcell" weight="0.02" delay="2.0ms"/>
+            <connectionWD id="79" preCellId="../Background_pre/9/ssp_pre" postCellId="../Epop/7/eifcell" weight="0.02" delay="2.0ms"/>
+        </projection>
+    </network>
+</neuroml>
