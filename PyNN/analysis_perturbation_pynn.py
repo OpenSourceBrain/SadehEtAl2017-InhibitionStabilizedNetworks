@@ -19,20 +19,25 @@ Tpost =  defaultParams.Tpost
 T = Ttrans+Tblank+Tstim #+Tpost
 
 
-if '-small' in sys.argv:
-    size = 500
-    defaultParams.set_total_population_size(size)
-
-N = defaultParams.N
-NE = defaultParams.NE
-NI = defaultParams.NI
-
 fraction_to_stim = 0.75
-if len(sys.argv)==2:
+
+if len(sys.argv)>=2:
     try:
         fraction_to_stim = float(sys.argv[1])
     except:
         pass
+    
+if len(sys.argv)>=3:
+    try:
+        size = int(sys.argv[2])
+        defaultParams.set_total_population_size(size)
+    except:
+        pass
+
+
+N = defaultParams.N
+NE = defaultParams.NE
+NI = defaultParams.NI
 
 NI_pert = int(NI * fraction_to_stim)
 NI_nonpert = NI-NI_pert

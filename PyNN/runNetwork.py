@@ -39,7 +39,7 @@ def runNetwork(Be,
     NE = defaultParams.NE
     NI = defaultParams.NI
 
-    print('\n # -----> size of pert. inh: %s; base rate %s; pert rate %s'% (nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
+    print('\n # -----> Num cells: %s, size of pert. inh: %s; base rate %s; pert rate %s'% (N, nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
 
     r_extra = np.zeros(N)
     r_extra[NE:NE+nn_stim] = defaultParams.r_stim
@@ -227,24 +227,30 @@ if __name__ == '__main__':
     Bi=.5
     N_rec_v = 20
     
-    if '-small' in sys.argv:
-        size = 500
-        defaultParams.set_total_population_size(size)
-        N_rec_v = 10#size
     
     fraction_to_stim = 0.75
-    if len(sys.argv)==3:
+    
+    if len(sys.argv)>=3:
         try:
             fraction_to_stim = float(sys.argv[2])
         except:
             pass
+        
+    if len(sys.argv)>=4:
+        try:
+            size = int(sys.argv[3])
+            defaultParams.set_total_population_size(size)
+        except:
+            pass
+        
     print("Going to stimulate %s of the inhibitory cells"%fraction_to_stim)
     nn_stim_rng = (np.array([fraction_to_stim])*defaultParams.NI).astype('int')
     
+    '''
     if '-small' in sys.argv:
         nn_stim_rng = (np.array([0.95])*defaultParams.NI).astype('int')
         defaultParams.r_bkg = 9.6e3
-        defaultParams.r_stim = -100
+        defaultParams.r_stim = -100'''
 
     if '-nogui' in sys.argv:
         show_gui = False
@@ -258,3 +264,4 @@ if __name__ == '__main__':
         
     if show_gui:
         plt.show()
+        
