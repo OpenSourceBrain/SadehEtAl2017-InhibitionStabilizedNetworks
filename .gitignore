@@ -19,3 +19,6 @@
 /NeuroML2/*.pov
 /NeuroML2/*.dat
 /NeuroML2/*.ini
+/NeuroML2/*nrn.py
+/NeuroML2/*.mod
+/NeuroML2/x86_64

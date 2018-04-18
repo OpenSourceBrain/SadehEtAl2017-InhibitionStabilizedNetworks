@@ -1,4 +1,4 @@
-from neuromllite import Network, Cell, InputSource, Population, Synapse
+from neuromllite import Network, Cell, InputSource, Population, Synapse, RectangularRegion
 from neuromllite import Projection, RandomConnectivity, Input, Simulation, RandomLayout, OneToOneConnector
 from neuromllite.NetworkGenerator import generate_and_run
 from neuromllite.NetworkGenerator import generate_neuroml2_from_network
@@ -54,6 +54,14 @@ ssp_pre = Cell(id='ssp_pre',
 
 net.cells.append(ssp_pre)
 
+r = RectangularRegion(id='ISN_network', 
+                      x=0,
+                      y=0,
+                      z=0,
+                      width=1000,
+                      height=100,
+                      depth=1000)
+net.regions.append(r)
 
 pE = Population(id='Epop', size='int(N*fraction_E)', component=cell.id, properties={'color':'0 0 0.8'})
 pI = Population(id='Ipop', size='N - int(N*fraction_E)', component=cell.id, properties={'color':'.8 0 0'})
@@ -65,7 +73,7 @@ net.populations.append(pI)
 net.populations.append(bkgPre)
 
 for p in net.populations:
-    p.random_layout = RandomLayout(width=1000,height=100,depth=1000)
+    p.random_layout = RandomLayout(region=r.id)
 
 net.synapses.append(Synapse(id='ampa', 
                             pynn_receptor_type='excitatory', 
@@ -153,8 +161,11 @@ elif '-jnmlnetpyne' in sys.argv:
 elif '-sonata' in sys.argv:
     generate_and_run(sim, net, simulator='Sonata') # Will not "run" obviously...
     
-elif '-graph' in sys.argv:
-    generate_and_run(sim, net, simulator='Graph') # Will not "run" obviously...
+elif '-graph0' in sys.argv:
+    generate_and_run(sim, net, simulator='Graph0') # Will not "run" obviously...
+    
+elif '-graph2' in sys.argv:
+    generate_and_run(sim, net, simulator='Graph2') # Will not "run" obviously...
     
 elif '-jnml' in sys.argv:
     generate_and_run(sim, net, simulator='jNeuroML')

@@ -68,6 +68,18 @@
                 }
             }
         ], 
+        "regions": [
+            {
+                "ISN_network": {
+                    "x": 0.0, 
+                    "y": 0.0, 
+                    "z": 0.0, 
+                    "width": 1000.0, 
+                    "height": 100.0, 
+                    "depth": 1000.0
+                }
+            }
+        ], 
         "populations": [
             {
                 "Epop": {
@@ -77,9 +89,7 @@
                         "color": "0 0 0.8"
                     }, 
                     "random_layout": {
-                        "width": 1000.0, 
-                        "height": 100.0, 
-                        "depth": 1000.0
+                        "region": "ISN_network"
                     }
                 }
             }, 
@@ -91,9 +101,7 @@
                         "color": ".8 0 0"
                     }, 
                     "random_layout": {
-                        "width": 1000.0, 
-                        "height": 100.0, 
-                        "depth": 1000.0
+                        "region": "ISN_network"
                     }
                 }
             }, 
@@ -105,9 +113,7 @@
                         "color": ".8 .8 .8"
                     }, 
                     "random_layout": {
-                        "width": 1000.0, 
-                        "height": 100.0, 
-                        "depth": 1000.0
+                        "region": "ISN_network"
                     }
                 }
             }
