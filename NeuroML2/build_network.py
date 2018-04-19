@@ -127,47 +127,27 @@ net.projections.append(Projection(id='projII',
 
 print(net)
 print(net.to_json())
-net.to_json_file('%s.json'%net.id)
+new_file = net.to_json_file('%s.json'%net.id)
 
 
 ################################################################################
 ###   Build Simulation object & save as JSON
 
 sim = Simulation(id='SimISN',
+                 network=new_file,
                  duration='1000',
                  dt='0.025',
                  recordTraces={pE.id:'*',pI.id:'*'})
                  
 sim.to_json_file()
 
-if '-pynnnest' in sys.argv:
-    generate_and_run(sim, net, simulator='PyNN_NEST')
-    
-elif '-pynnnrn' in sys.argv:
-    generate_and_run(sim, net, simulator='PyNN_NEURON')
-    
-elif '-pynnbrian' in sys.argv:
-    generate_and_run(sim, net, simulator='PyNN_Brian')
-    
-elif '-netpyne' in sys.argv:
-    generate_and_run(sim, net, simulator='NetPyNE')
-    
-elif '-jnmlnrn' in sys.argv:
-    generate_and_run(sim, net, simulator='jNeuroML_NEURON')
-    
-elif '-jnmlnetpyne' in sys.argv:
-    generate_and_run(sim, net, simulator='jNeuroML_NetPyNE')
-    
-elif '-sonata' in sys.argv:
-    generate_and_run(sim, net, simulator='Sonata') # Will not "run" obviously...
-    
-elif '-graph0' in sys.argv:
-    generate_and_run(sim, net, simulator='Graph0') # Will not "run" obviously...
-    
-elif '-graph2' in sys.argv:
-    generate_and_run(sim, net, simulator='Graph2') # Will not "run" obviously...
-    
-elif '-jnml' in sys.argv:
-    generate_and_run(sim, net, simulator='jNeuroML')
+
+################################################################################
+###   Run in some simulators
+
+from neuromllite.NetworkGenerator import check_to_generate_or_run
+import sys
+
+check_to_generate_or_run(sys.argv, sim)
 
 
