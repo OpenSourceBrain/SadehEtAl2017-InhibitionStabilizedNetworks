@@ -12,3 +12,15 @@
 /PyNN/LEMS_*.xml
 /PyNN/ISN.net.nml
 /SpikingSimulationModels/__pycache__
+/PyNN/LEMS_Sim_ISN_netpyne.py
+/PyNN/analysis_perturbation_pynn_ss.py
+/NeuroML2/*.gv
+/NeuroML2/*.gv.pdf
+/NeuroML2/*.pov
+/NeuroML2/*.dat
+/NeuroML2/*.ini
+/NeuroML2/*nrn.py
+/NeuroML2/*.mod
+/NeuroML2/x86_64
+/NeuroML2/ISN.net.png
+/NeuroML2/report*.txt
