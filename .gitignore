@@ -24,3 +24,8 @@
 /NeuroML2/x86_64
 /NeuroML2/ISN.net.png
 /NeuroML2/report*.txt
+/PyNN/*.gv
+/PyNN/*.gv.pdf
+/PyNN/*_nrn.py
+/PyNN/ISN.net.png
+/PyNN/Me.png
