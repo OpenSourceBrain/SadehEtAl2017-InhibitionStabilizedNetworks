@@ -5,6 +5,7 @@ import numpy as np
 
 from pyNN.utility import get_script_args, Timer, ProgressBar
 from pyNN.random import NumpyRNG, RandomDistribution
+from pyNN.space import RandomStructure, Cuboid
 from neo.io import PyNNTextIO
 
 sys.path.append("../SpikingSimulationModels")
@@ -92,7 +93,11 @@ def runNetwork(Be,
     print("%d Creating population with %d neurons." % (rank, N))
     celltype = EIF_cond_alpha_isfa_ista(**cell_parameters)
     celltype.default_initial_values['v'] = cell_parameters['v_rest'] # Setting default init v, useful for NML2 export
-    EI_pop = Population(N, celltype, label="EI")
+    
+    layer_volume = Cuboid(1000,100,1000)
+    layer_structure = RandomStructure(layer_volume, origin=(0,0,0))
+                
+    EI_pop = Population(N, celltype, structure=layer_structure, label="EI")
     E_pop = PopulationView(EI_pop, np.array(range(0,NE)),label='E_pop')
     #print("%d Creating pop view %s." % (rank, E_pop))
     I_pop = PopulationView(EI_pop, np.array(range(NE,N)),label='I_pop')
