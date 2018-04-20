@@ -13,7 +13,7 @@ import defaultParams
 net = Network(id='ISN')
 net.notes = 'Based on network of Sadeh et al. 2017'
 
-net.parameters = { 'N': 100, 
+net.parameters = { 'N': 10, 
                    'fraction_E': 0.8,
                    'fraction_stimulated': .75,
                    'Be': .4,
@@ -37,10 +37,6 @@ cell.parameters = {
     'delta_T':    2 ,     # Slope factor in mV. See https://github.com/nest/nest-simulator/blob/master/models/aeif_cond_alpha.cpp
     'tau_w':      144.0,     # Adaptation time constant in ms. See https://github.com/nest/nest-simulator/blob/master/models/aeif_cond_alpha.cpp
     'v_thresh':   nesp['V_th'],     # Spike initiation threshold in mV
-    'e_rev_E':    nesp['E_ex'],     # Excitatory reversal potential in mV.
-    'tau_syn_E':  nesp['tau_syn_ex'],     # Rise time of excitatory synaptic conductance in ms (alpha function).
-    'e_rev_I':    nesp['E_in'],     # Inhibitory reversal potential in mV.
-    'tau_syn_I':  nesp['tau_syn_in'],     # Rise time of the inhibitory synaptic conductance in ms (alpha function).
 }
     
 net.cells.append(cell)
@@ -78,11 +74,12 @@ for p in net.populations:
 net.synapses.append(Synapse(id='ampa', 
                             pynn_receptor_type='excitatory', 
                             pynn_synapse_type='cond_alpha', 
-                            parameters={'e_rev':-10, 'tau_syn':2}))
+                            parameters={'e_rev':nesp['E_ex'], 'tau_syn':nesp['tau_syn_ex']}))
+                            
 net.synapses.append(Synapse(id='gaba', 
                             pynn_receptor_type='inhibitory', 
                             pynn_synapse_type='cond_alpha', 
-                            parameters={'e_rev':-80, 'tau_syn':10}))
+                            parameters={'e_rev':nesp['E_in'], 'tau_syn':nesp['tau_syn_in']}))
 
 net.projections.append(Projection(id='projBkgPre',
                                   presynaptic=bkgPre.id, 
@@ -91,7 +88,7 @@ net.projections.append(Projection(id='projBkgPre',
                                   delay=2,
                                   weight='0.001*Be_bkg',
                                   one_to_one_connector=OneToOneConnector()))
-
+'''
 net.projections.append(Projection(id='projEe',
                                   presynaptic=pE.id, 
                                   postsynaptic=pE.id,
@@ -123,7 +120,7 @@ net.projections.append(Projection(id='projII',
                                   delay=2,
                                   weight='0.001*Bi',
                                   random_connectivity=RandomConnectivity(probability=1)))
-
+'''
 
 print(net)
 print(net.to_json())

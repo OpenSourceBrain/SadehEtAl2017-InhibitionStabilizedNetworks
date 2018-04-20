@@ -6,7 +6,7 @@
             "Be": 0.4, 
             "Be_bkg": 0.1, 
             "Bi": 0.5, 
-            "N": 100, 
+            "N": 10, 
             "fraction_stimulated": 0.75, 
             "bkg_rate": 9600
         }, 
@@ -17,21 +17,17 @@
                     "pynn_cell": "EIF_cond_alpha_isfa_ista", 
                     "parameters": {
                         "tau_refrac": 2.0, 
+                        "cm": 0.12, 
+                        "b": 0, 
+                        "v_rest": -70.0, 
+                        "v_spike": 0.0, 
                         "a": 0, 
                         "tau_m": 16.8, 
-                        "e_rev_E": 0.0, 
                         "i_offset": 0.0, 
-                        "cm": 0.12, 
                         "delta_T": 2, 
-                        "e_rev_I": -75.0, 
                         "v_thresh": -50.0, 
-                        "b": 0, 
-                        "tau_syn_E": 1.0, 
                         "v_reset": -60.0, 
-                        "v_spike": 0.0, 
-                        "tau_syn_I": 1.0, 
-                        "tau_w": 144.0, 
-                        "v_rest": -70.0
+                        "tau_w": 144.0
                     }
                 }
             }, 
@@ -52,8 +48,8 @@
                     "pynn_synapse_type": "cond_alpha", 
                     "pynn_receptor_type": "excitatory", 
                     "parameters": {
-                        "e_rev": -10, 
-                        "tau_syn": 2
+                        "e_rev": 0.0, 
+                        "tau_syn": 1.0
                     }
                 }
             }, 
@@ -62,8 +58,8 @@
                     "pynn_synapse_type": "cond_alpha", 
                     "pynn_receptor_type": "inhibitory", 
                     "parameters": {
-                        "e_rev": -80, 
-                        "tau_syn": 10
+                        "e_rev": -75.0, 
+                        "tau_syn": 1.0
                     }
                 }
             }
@@ -127,54 +123,6 @@
                     "delay": 2, 
                     "weight": "0.001*Be_bkg", 
                     "one_to_one_connector": {}
-                }
-            }, 
-            {
-                "projEe": {
-                    "presynaptic": "Epop", 
-                    "postsynaptic": "Epop", 
-                    "synapse": "ampa", 
-                    "delay": 2, 
-                    "weight": "0.001*Be", 
-                    "random_connectivity": {
-                        "probability": 0.15
-                    }
-                }
-            }, 
-            {
-                "projEI": {
-                    "presynaptic": "Epop", 
-                    "postsynaptic": "Ipop", 
-                    "synapse": "ampa", 
-                    "delay": 2, 
-                    "weight": "0.001*Be", 
-                    "random_connectivity": {
-                        "probability": 0.15
-                    }
-                }
-            }, 
-            {
-                "projIE": {
-                    "presynaptic": "Ipop", 
-                    "postsynaptic": "Epop", 
-                    "synapse": "gaba", 
-                    "delay": 2, 
-                    "weight": "0.001*Bi", 
-                    "random_connectivity": {
-                        "probability": 1.0
-                    }
-                }
-            }, 
-            {
-                "projII": {
-                    "presynaptic": "Ipop", 
-                    "postsynaptic": "Ipop", 
-                    "synapse": "gaba", 
-                    "delay": 2, 
-                    "weight": "0.001*Bi", 
-                    "random_connectivity": {
-                        "probability": 1.0
-                    }
                 }
             }
         ]
