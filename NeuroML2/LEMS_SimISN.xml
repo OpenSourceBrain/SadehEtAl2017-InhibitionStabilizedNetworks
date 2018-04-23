@@ -1,0 +1,56 @@
+<Lems>
+    
+    <!-- 
+
+        This LEMS file has been automatically generated using PyNeuroML v0.3.11 (libNeuroML v0.2.41)
+
+     -->
+    
+    <!-- Specify which component to run -->
+    <Target component="SimISN" reportFile="report.SimISN.txt"/>
+
+    <!-- Include core NeuroML2 ComponentType definitions -->
+    <Include file="Cells.xml"/>
+    <Include file="Networks.xml"/>
+    <Include file="Simulation.xml"/>
+    
+    <Include file="PyNN.xml"/>
+    <Include file="ISN.net.nml"/>
+   
+    <Simulation id="SimISN" length="1000.0ms" step="0.025ms" target="ISN" seed="12345">  <!-- Note seed: ensures same random numbers used every run -->
+        
+        <Display id="DispPop__Epop" title="Membrane potentials of cells in Epop" timeScale="1ms" xmin="-100.0" xmax="1100.0" ymin="-90" ymax="50">
+            <Line id="Epop[0]: v" quantity="Epop/0/eifcell/v" scale="1mV" color="#6aa799" timeScale="1ms"/>
+            <Line id="Epop[1]: v" quantity="Epop/1/eifcell/v" scale="1mV" color="#029a72" timeScale="1ms"/>
+            <Line id="Epop[2]: v" quantity="Epop/2/eifcell/v" scale="1mV" color="#d340bb" timeScale="1ms"/>
+            <Line id="Epop[3]: v" quantity="Epop/3/eifcell/v" scale="1mV" color="#4c73a9" timeScale="1ms"/>
+            <Line id="Epop[4]: v" quantity="Epop/4/eifcell/v" scale="1mV" color="#5e503a" timeScale="1ms"/>
+            <Line id="Epop[5]: v" quantity="Epop/5/eifcell/v" scale="1mV" color="#3193ca" timeScale="1ms"/>
+            <Line id="Epop[6]: v" quantity="Epop/6/eifcell/v" scale="1mV" color="#90e5e9" timeScale="1ms"/>
+            <Line id="Epop[7]: v" quantity="Epop/7/eifcell/v" scale="1mV" color="#29645f" timeScale="1ms"/>
+        </Display>
+        
+        <Display id="DispPop__Ipop" title="Membrane potentials of cells in Ipop" timeScale="1ms" xmin="-100.0" xmax="1100.0" ymin="-90" ymax="50">
+            <Line id="Ipop[0]: v" quantity="Ipop/0/eifcell/v" scale="1mV" color="#1fcff4" timeScale="1ms"/>
+            <Line id="Ipop[1]: v" quantity="Ipop/1/eifcell/v" scale="1mV" color="#6ed4e9" timeScale="1ms"/>
+        </Display>
+        
+        <OutputFile id="Volts_file__Epop" fileName="SimISN.Epop.v.dat">
+            <OutputColumn id="v_Epop_0_eifcell_v" quantity="Epop/0/eifcell/v"/> 
+            <OutputColumn id="v_Epop_1_eifcell_v" quantity="Epop/1/eifcell/v"/> 
+            <OutputColumn id="v_Epop_2_eifcell_v" quantity="Epop/2/eifcell/v"/> 
+            <OutputColumn id="v_Epop_3_eifcell_v" quantity="Epop/3/eifcell/v"/> 
+            <OutputColumn id="v_Epop_4_eifcell_v" quantity="Epop/4/eifcell/v"/> 
+            <OutputColumn id="v_Epop_5_eifcell_v" quantity="Epop/5/eifcell/v"/> 
+            <OutputColumn id="v_Epop_6_eifcell_v" quantity="Epop/6/eifcell/v"/> 
+            <OutputColumn id="v_Epop_7_eifcell_v" quantity="Epop/7/eifcell/v"/> 
+        </OutputFile>
+        
+        <OutputFile id="Volts_file__Ipop" fileName="SimISN.Ipop.v.dat">
+            <OutputColumn id="v_Ipop_0_eifcell_v" quantity="Ipop/0/eifcell/v"/> 
+            <OutputColumn id="v_Ipop_1_eifcell_v" quantity="Ipop/1/eifcell/v"/> 
+        </OutputFile>
+        
+    </Simulation>
+
+</Lems>

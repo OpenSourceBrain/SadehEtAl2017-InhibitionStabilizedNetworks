@@ -5,6 +5,7 @@ import numpy as np
 
 from pyNN.utility import get_script_args, Timer, ProgressBar
 from pyNN.random import NumpyRNG, RandomDistribution
+from pyNN.space import RandomStructure, Cuboid
 from neo.io import PyNNTextIO
 
 sys.path.append("../SpikingSimulationModels")
@@ -19,7 +20,7 @@ def runNetwork(Be,
                dt = defaultParams.dt, 
                N_rec_v = 5, 
                save=False, 
-               simtime = defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans, 
+               simtime = defaultParams.Tpost+defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans, 
                extra = {}):
     
     exec("from pyNN.%s import *" % simulator_name) in globals()
@@ -39,14 +40,13 @@ def runNetwork(Be,
     NE = defaultParams.NE
     NI = defaultParams.NI
 
-    print('\n # -----> size of pert. inh: %s; base rate %s; pert rate %s'% (nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
+    print('\n # -----> Num cells: %s, size of pert. inh: %s; base rate %s; pert rate %s'% (N, nn_stim, defaultParams.r_bkg, defaultParams.r_stim))
 
     r_extra = np.zeros(N)
     r_extra[NE:NE+nn_stim] = defaultParams.r_stim
 
-    rr1 = defaultParams.r_bkg*np.ones(N)
+    rr1 = defaultParams.r_bkg*np.random.uniform(.75,1.25, N)
     rr2 = rr1 + r_extra
-    
     
     rank = setup(timestep=dt, max_delay=defaultParams.delay_default, reference='ISN', **extra)
     
@@ -66,7 +66,7 @@ def runNetwork(Be,
     timer.start()  # start timer on construction
     
     print("%d Setting up random number generator" % rank)
-    kernelseed = 123456
+    kernelseed = 123
     rng = NumpyRNG(kernelseed, parallel_safe=True)
     
     
@@ -93,31 +93,51 @@ def runNetwork(Be,
     print("%d Creating population with %d neurons." % (rank, N))
     celltype = EIF_cond_alpha_isfa_ista(**cell_parameters)
     celltype.default_initial_values['v'] = cell_parameters['v_rest'] # Setting default init v, useful for NML2 export
-    EI_pop = Population(N, celltype, label="EI")
-    E_pop = PopulationView(EI_pop, np.array(range(0,NE)),label='E_pop')
-    #print("%d Creating pop view %s." % (rank, E_pop))
-    I_pop = PopulationView(EI_pop, np.array(range(NE,N)),label='I_pop')
-    #print("%d Creating pop view %s." % (rank, I_pop))
     
-    I_pert_pop = PopulationView(EI_pop, np.array(range(NE,NE+nn_stim)),label='I_pert_pop')
-    I_nonpert_pop = PopulationView(EI_pop, np.array(range(0,NE)+range(NE+nn_stim,N)),label='I_nonpert_pop')
+    layer_volume = Cuboid(1000,100,1000)
+    layer_structure = RandomStructure(layer_volume, origin=(0,0,0))
+             
+    default_cell_radius = 10
+    #EI_pop = Population(N, celltype, structure=layer_structure, label="EI")
+    E_pop = Population(NE, celltype, structure=layer_structure, label='E_pop')
+    E_pop.annotate(color='0 0 .8')
+    E_pop.annotate(radius=default_cell_radius)
+    E_pop.annotate(type='E') # temp indicator to use for connection arrowhead
+    #print("%d Creating pop %s." % (rank, E_pop))
+    I_pop = Population(NI, celltype, structure=layer_structure, label='I_pop')
+    I_pop.annotate(color='.8 0 0')
+    I_pop.annotate(radius=default_cell_radius)
+    I_pop.annotate(type='I') # temp indicator to use for connection arrowhead
+    #print("%d Creating pop %s." % (rank, I_pop))
+    
+    I_pert_pop = PopulationView(I_pop, np.array(range(0,nn_stim)),label='I_pert_pop')
+    I_nonpert_pop = PopulationView(I_pop, np.array(range(nn_stim,NI)),label='I_nonpert_pop')
     
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeA = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
-    expoissonA = Population(N, source_typeA, label="pre_pert_stim_all")
+    source_typeA_E = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim+defaultParams.Tpost)
+    expoissonA_E = Population(NE, source_typeA_E, label="stim_E")
     
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
-    expoissonB = Population(N-nn_stim, source_typeB, label="non_pert_stim")
+    source_typeA_I = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
+    expoissonA_I = Population(NI, source_typeA_I, label="pre_pert_stim_I")
+    
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank,duration=defaultParams.Tstim+defaultParams.Tpost)
+    #expoissonB_E = Population(NE, source_typeB, label="non_pert_stim_E")
+    expoissonB_I = Population(len(I_nonpert_pop), source_typeB, label="non_pert_stim_I")
     
     p_rate = defaultParams.r_bkg+defaultParams.r_stim
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
+    source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank, duration=defaultParams.Tstim)
     expoissonC = Population(nn_stim, source_typeC, label="pert_stim")
+
+    p_rate = defaultParams.r_bkg
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeD = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim, duration=defaultParams.Tpost)
+    expoissonD = Population(nn_stim, source_typeD, label="pert_poststim")
     
-    
-    
+
     progress_bar = ProgressBar(width=20)
     connector_E = FixedProbabilityConnector(0.15, rng=rng, callback=progress_bar)
     connector_I = FixedProbabilityConnector(1, rng=rng, callback=progress_bar)
@@ -137,19 +157,32 @@ def runNetwork(Be,
     print("E --> E\t\t", len(E_to_E), "connections")
     E_to_I = Projection(E_pop, I_pop, connector_E, EI_syn, receptor_type="excitatory")
     print("E --> I\t\t", len(E_to_I), "connections")
-    I_to_I = Projection(I_pop, I_pop, connector_I, II_syn, receptor_type="excitatory")
+    I_to_I = Projection(I_pop, I_pop, connector_I, II_syn, receptor_type="inhibitory")
     print("I --> I\t\t", len(I_to_I), "connections")
-    I_to_E = Projection(I_pop, E_pop, connector_I, IE_syn, receptor_type="excitatory")
+    I_to_E = Projection(I_pop, E_pop, connector_I, IE_syn, receptor_type="inhibitory")
     print("I --> E\t\t", len(I_to_E), "connections")
     
     
-    input_A = Projection(expoissonA, EI_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
-    print("input --> %s cells pre pert\t"%len(EI_pop), len(input_A), "connections")
-    input_B = Projection(expoissonB, I_nonpert_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
-    print("input --> %s cells post pert\t"%len(I_nonpert_pop), len(input_B), "connections")
+    input_A_E = Projection(expoissonA_E, E_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(E_pop), len(input_A_E), "connections")
+    input_A_I = Projection(expoissonA_I, I_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(I_pop), len(input_A_I), "connections")
+    
+    ##input_B_E = Projection(expoissonB_E, E_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    ##print("input --> %s cells post pert\t"%len(E_pop), len(input_B_E), "connections")
+    
+    input_B_I = Projection(expoissonB_I, I_nonpert_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    print("input --> %s cells post pert\t"%len(I_nonpert_pop), len(input_B_I), "connections")
+    
+    
     input_C = Projection(expoissonC, I_pert_pop, ext_Connector, ext_syn_stim, receptor_type="excitatory")
     print("input --> %s cells pre pert\t"%len(I_pert_pop), len(input_C), "connections")
     
+    input_D = Projection(expoissonD, I_pert_pop, ext_Connector, ext_syn_stim, receptor_type="excitatory")
+    print("input --> %s cells pre pert\t"%len(I_pert_pop), len(input_D), "connections")
+    
+    # Can't be used for connections etc. as NeuroML export not (yet) supported
+    EI_pop = Assembly(E_pop, I_pop, label='EI')
     
     # Record spikes
     print("%d Setting up recording in excitatory population." % rank)
@@ -218,28 +251,30 @@ if __name__ == '__main__':
     
     simulator_name = get_script_args(1)[0]
     
-    Be=.1
-    Bi=-.1
-    N_rec_v = 20
+    Be=.4
+    Bi=.5
     
-    if '-small' in sys.argv:
-        size = 100
-        defaultParams.set_total_population_size(size)
-        N_rec_v = size
-        
+    size = 2000
     fraction_to_stim = 0.75
-    if len(sys.argv)==3:
+    
+    if len(sys.argv)>=3:
         try:
             fraction_to_stim = float(sys.argv[2])
         except:
             pass
+        
+    if len(sys.argv)>=4:
+        try:
+            size = int(sys.argv[3])
+            defaultParams.set_total_population_size(size)
+        except:
+            pass
+        
+    N_rec_v = min(10,size)
+    
     print("Going to stimulate %s of the inhibitory cells"%fraction_to_stim)
     nn_stim_rng = (np.array([fraction_to_stim])*defaultParams.NI).astype('int')
     
-    if '-small' in sys.argv:
-        nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')
-        defaultParams.r_bkg = 9000
-        defaultParams.r_stim = -400
 
     if '-nogui' in sys.argv:
         show_gui = False
@@ -253,3 +288,4 @@ if __name__ == '__main__':
         
     if show_gui:
         plt.show()
+        

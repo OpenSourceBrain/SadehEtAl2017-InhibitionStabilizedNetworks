@@ -10,9 +10,10 @@ import matplotlib
 n_cores = 4
 
 # define the NEST path if it's needed
-nest_path = '/Users/sadra/NEST/nest/ins/lib/python3.4/site-packages/'
-if os.path.exists(nest_path):
-    sys.path.append(nest_path)
+#nest_path = '/Users/sadra/NEST/nest/ins/lib/python3.4/site-packages/'
+#nest_path = '/Users/sadra/NEST/lib/python3.5/site-packages/'
+#if os.path.exists(nest_path):
+#    sys.path.append(nest_path)
 
 #------------- neuron params
 
@@ -85,6 +86,8 @@ Ttrans = 150.
 Tblank= 500.
 # simulation time of perturbation (ms)
 Tstim = 500.
+# time after perturbation
+Tpost = 0.
 
 # number of trials
 Ntrials = 5
