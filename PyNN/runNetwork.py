@@ -254,7 +254,7 @@ if __name__ == '__main__':
     Be=.4
     Bi=.5
     
-    
+    size = 2000
     fraction_to_stim = 0.75
     
     if len(sys.argv)>=3:
