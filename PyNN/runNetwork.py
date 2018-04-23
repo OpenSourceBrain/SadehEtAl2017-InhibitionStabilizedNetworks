@@ -100,12 +100,14 @@ def runNetwork(Be,
     default_cell_radius = 10
     #EI_pop = Population(N, celltype, structure=layer_structure, label="EI")
     E_pop = Population(NE, celltype, structure=layer_structure, label='E_pop')
-    E_pop.annotate(color='0 0 1')
+    E_pop.annotate(color='0 0 .8')
     E_pop.annotate(radius=default_cell_radius)
+    E_pop.annotate(type='E') # temp indicator to use for connection arrowhead
     #print("%d Creating pop %s." % (rank, E_pop))
     I_pop = Population(NI, celltype, structure=layer_structure, label='I_pop')
-    I_pop.annotate(color='1 0 0')
+    I_pop.annotate(color='.8 0 0')
     I_pop.annotate(radius=default_cell_radius)
+    I_pop.annotate(type='I') # temp indicator to use for connection arrowhead
     #print("%d Creating pop %s." % (rank, I_pop))
     
     I_pert_pop = PopulationView(I_pop, np.array(range(0,nn_stim)),label='I_pert_pop')
@@ -113,13 +115,16 @@ def runNetwork(Be,
     
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeA = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
-    expoissonA_E = Population(NE, source_typeA, label="pre_pert_stim_E")
-    expoissonA_I = Population(NI, source_typeA, label="pre_pert_stim_I")
+    source_typeA_E = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim+defaultParams.Tpost)
+    expoissonA_E = Population(NE, source_typeA_E, label="stim_E")
     
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank)
-    expoissonB_E = Population(NE, source_typeB, label="non_pert_stim_E")
+    source_typeA_I = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
+    expoissonA_I = Population(NI, source_typeA_I, label="pre_pert_stim_I")
+    
+    print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
+    source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank,duration=defaultParams.Tstim+defaultParams.Tpost)
+    #expoissonB_E = Population(NE, source_typeB, label="non_pert_stim_E")
     expoissonB_I = Population(len(I_nonpert_pop), source_typeB, label="non_pert_stim_I")
     
     p_rate = defaultParams.r_bkg+defaultParams.r_stim
@@ -129,7 +134,7 @@ def runNetwork(Be,
 
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
-    source_typeD = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim)
+    source_typeD = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim, duration=defaultParams.Tpost)
     expoissonD = Population(nn_stim, source_typeD, label="pert_poststim")
     
 
@@ -163,8 +168,9 @@ def runNetwork(Be,
     input_A_I = Projection(expoissonA_I, I_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
     print("input --> %s cells pre pert\t"%len(I_pop), len(input_A_I), "connections")
     
-    input_B_E = Projection(expoissonB_E, E_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
-    print("input --> %s cells post pert\t"%len(E_pop), len(input_B_E), "connections")
+    ##input_B_E = Projection(expoissonB_E, E_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
+    ##print("input --> %s cells post pert\t"%len(E_pop), len(input_B_E), "connections")
+    
     input_B_I = Projection(expoissonB_I, I_nonpert_pop, ext_Connector, ext_syn_bkg, receptor_type="excitatory")
     print("input --> %s cells post pert\t"%len(I_nonpert_pop), len(input_B_I), "connections")
     
@@ -264,15 +270,11 @@ if __name__ == '__main__':
         except:
             pass
         
-    N_rec_v = min(100,size)
+    N_rec_v = min(10,size)
+    
     print("Going to stimulate %s of the inhibitory cells"%fraction_to_stim)
     nn_stim_rng = (np.array([fraction_to_stim])*defaultParams.NI).astype('int')
     
-    '''
-    if '-small' in sys.argv:
-        nn_stim_rng = (np.array([0.95])*defaultParams.NI).astype('int')
-        defaultParams.r_bkg = 9.6e3
-        defaultParams.r_stim = -100'''
 
     if '-nogui' in sys.argv:
         show_gui = False
