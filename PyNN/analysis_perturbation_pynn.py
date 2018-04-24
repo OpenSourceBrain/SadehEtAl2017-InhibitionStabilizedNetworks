@@ -2,6 +2,7 @@
 from __future__ import print_function
 import numpy as np
 import pylab as pl 
+import matplotlib.patches as patches
 
 import sys
 sys.path.append("../SpikingSimulationModels")
@@ -16,7 +17,7 @@ Tstim = defaultParams.Tstim
 # time after perturbation
 Tpost =  defaultParams.Tpost
 
-T = Ttrans+Tblank+Tstim #+Tpost
+T = Ttrans+Tblank+Tstim+Tpost
 
 
 fraction_to_stim = 0.75
@@ -66,11 +67,18 @@ for k in range(len(spt)):
         npi_spi.append(i)
         npi_spt.append(t)
         
-pl.figure()
+fig0, (ax1, ax2) = pl.subplots(2, 1, sharex=True)
 
-pl.plot(e_spt, e_spi, '|', color='red')
-pl.plot(pi_spt, pi_spi, '|', color='black')
-pl.plot(npi_spt, npi_spi, '|', color='blue')
+fig0.set_size_inches(12, 8, forward=True)
+
+lblue = '#99c2ff'
+dblue = '#0047b3'
+
+ax1.plot(e_spt, e_spi, '.', color='red',markersize=2)
+ax1.plot(pi_spt, pi_spi, '.', color=dblue,markersize=2)
+ax1.plot(npi_spt, npi_spi, '.', color=lblue,markersize=2)
+
+ax1.set_ylabel('Cell index')
 
 bw = 50
 hst = np.histogram2d(spt, spi, range=((0,T),(0,N-1)), bins=(T/bw,N))
@@ -82,15 +90,31 @@ r_exc = rr[:,0:NE]
 r_inh_pert = rr[:,NE:NE+NI_pert]
 r_inh_nonpert = rr[:,N-NI_nonpert:]
 
-pl.figure()
 
 r_exc_m = np.nanmean(r_exc,1)
 r_inh_pert_m = np.nanmean(r_inh_pert,1)
 r_inh_nonpert_m = np.nanmean(r_inh_nonpert,1)
 
-pl.plot(tt, r_exc_m, 'r', lw=2)
-pl.plot(tt, r_inh_pert_m, 'k', lw=2)
-pl.plot(tt, r_inh_nonpert_m, 'b', lw=2)
+ax2.plot(tt, r_exc_m, 'r', lw=2)
+ax2.plot(tt, r_inh_pert_m, dblue, lw=2)
+ax2.plot(tt, r_inh_nonpert_m, lblue, lw=2)
+
+pl.ylabel('Firing rate (Hz)')
+pl.xlabel('Time (ms)')
+
+height = 20
+
+pl.xlim([0,T])
+pl.ylim([0,height])
+
+ax2.add_patch(
+    patches.Rectangle(
+        (Ttrans+Tblank, 0),   # (x,y)
+        Tstim,          # width
+        height,          # height
+        facecolor='#f8f5dd'
+    )
+)
 
 t1 = (tt>Ttrans)*(tt<(Ttrans+Tblank))
 t2 = (tt>(Ttrans+Tblank))*(tt<(Ttrans+Tblank+Tstim))
@@ -99,5 +123,7 @@ print('before vs after perturbation')
 print('exc: ', np.nanmean(r_exc[t1]), np.nanmean(r_exc[t2]))
 print('inh (pert): ', np.nanmean(r_inh_pert_m[t1]), np.nanmean(r_inh_pert_m[t2]))
 print('inh (non-pert): ', np.nanmean(r_inh_nonpert_m[t1]), np.nanmean(r_inh_nonpert_m[t2]))
+
+fig0.savefig('rates.png', dpi=150, bbox_inches='tight')
 
 pl.show()

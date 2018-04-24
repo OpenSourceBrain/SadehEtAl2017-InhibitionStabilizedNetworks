@@ -29,3 +29,5 @@
 /PyNN/*_nrn.py
 /PyNN/ISN.net.png
 /PyNN/Me.png
+/PyNN/*.pov
+/PyNN/*.ini

@@ -48,7 +48,7 @@ def runNetwork(Be,
     rr1 = defaultParams.r_bkg*np.random.uniform(.75,1.25, N)
     rr2 = rr1 + r_extra
     
-    rank = setup(timestep=dt, max_delay=defaultParams.delay_default, reference='ISN', **extra)
+    rank = setup(timestep=dt, max_delay=defaultParams.delay_default, reference='ISN', save_format='hdf5', **extra)
     
     print("rank =", rank)
     nump = num_processes()
@@ -96,16 +96,18 @@ def runNetwork(Be,
     
     layer_volume = Cuboid(1000,100,1000)
     layer_structure = RandomStructure(layer_volume, origin=(0,0,0))
+    
+    layer_structure_input = RandomStructure(layer_volume, origin=(0,-150,0))
              
     default_cell_radius = 10
     #EI_pop = Population(N, celltype, structure=layer_structure, label="EI")
     E_pop = Population(NE, celltype, structure=layer_structure, label='E_pop')
-    E_pop.annotate(color='0 0 .8')
+    E_pop.annotate(color='1 0 0')
     E_pop.annotate(radius=default_cell_radius)
     E_pop.annotate(type='E') # temp indicator to use for connection arrowhead
     #print("%d Creating pop %s." % (rank, E_pop))
     I_pop = Population(NI, celltype, structure=layer_structure, label='I_pop')
-    I_pop.annotate(color='.8 0 0')
+    I_pop.annotate(color='0 0 .9')
     I_pop.annotate(radius=default_cell_radius)
     I_pop.annotate(type='I') # temp indicator to use for connection arrowhead
     #print("%d Creating pop %s." % (rank, I_pop))
@@ -116,27 +118,29 @@ def runNetwork(Be,
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
     source_typeA_E = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim+defaultParams.Tpost)
-    expoissonA_E = Population(NE, source_typeA_E, label="stim_E")
+    expoissonA_E = Population(NE, source_typeA_E, structure=layer_structure_input, label="stim_E")
     
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
     source_typeA_I = SpikeSourcePoisson(rate=p_rate, start=0,duration=defaultParams.Ttrans+defaultParams.Tblank)
-    expoissonA_I = Population(NI, source_typeA_I, label="pre_pert_stim_I")
+    expoissonA_I = Population(NI, source_typeA_I, structure=layer_structure_input, label="pre_pert_stim_I")
     
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
     source_typeB = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank,duration=defaultParams.Tstim+defaultParams.Tpost)
     #expoissonB_E = Population(NE, source_typeB, label="non_pert_stim_E")
-    expoissonB_I = Population(len(I_nonpert_pop), source_typeB, label="non_pert_stim_I")
+    expoissonB_I = Population(len(I_nonpert_pop), source_typeB, structure=layer_structure_input, label="non_pert_stim_I")
     
     p_rate = defaultParams.r_bkg+defaultParams.r_stim
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
     source_typeC = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank, duration=defaultParams.Tstim)
-    expoissonC = Population(nn_stim, source_typeC, label="pert_stim")
+    expoissonC = Population(nn_stim, source_typeC, structure=layer_structure_input, label="pert_stim")
 
     p_rate = defaultParams.r_bkg
     print("%d Creating excitatory Poisson generator with rate %g spikes/s." % (rank, p_rate))
     source_typeD = SpikeSourcePoisson(rate=p_rate, start=defaultParams.Ttrans+defaultParams.Tblank+defaultParams.Tstim, duration=defaultParams.Tpost)
-    expoissonD = Population(nn_stim, source_typeD, label="pert_poststim")
+    expoissonD = Population(nn_stim, source_typeD, structure=layer_structure_input, label="pert_poststim")
     
+    for p in [expoissonA_E,expoissonA_I,expoissonB_I,expoissonC,expoissonD]:
+        p.annotate(color='0.8 0.8 0.8')
 
     progress_bar = ProgressBar(width=20)
     connector_E = FixedProbabilityConnector(0.15, rng=rng, callback=progress_bar)
@@ -256,6 +260,7 @@ if __name__ == '__main__':
     
     size = 2000
     fraction_to_stim = 0.75
+    defaultParams.Tpost = 500
     
     if len(sys.argv)>=3:
         try:

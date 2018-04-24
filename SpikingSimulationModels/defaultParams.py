@@ -81,13 +81,13 @@ r_bkg = 10000.-400.
 r_stim = -400.
 
 # transitent time to discard the data (ms)
-Ttrans = 150.
+Ttrans = 500.
 # simulation time before perturbation (ms)
 Tblank= 500.
 # simulation time of perturbation (ms)
 Tstim = 500.
 # time after perturbation
-Tpost = 0.
+Tpost = 500
 
 # number of trials
 Ntrials = 5
