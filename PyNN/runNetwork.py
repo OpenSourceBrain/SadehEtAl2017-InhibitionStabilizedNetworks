@@ -99,7 +99,9 @@ def runNetwork(Be,
     
     layer_structure_input = RandomStructure(layer_volume, origin=(0,-150,0))
              
-    default_cell_radius = 10
+    default_cell_radius = 15
+    stim_cell_radius = 10
+    
     #EI_pop = Population(N, celltype, structure=layer_structure, label="EI")
     E_pop = Population(NE, celltype, structure=layer_structure, label='E_pop')
     E_pop.annotate(color='1 0 0')
@@ -141,6 +143,7 @@ def runNetwork(Be,
     
     for p in [expoissonA_E,expoissonA_I,expoissonB_I,expoissonC,expoissonD]:
         p.annotate(color='0.8 0.8 0.8')
+        p.annotate(radius=stim_cell_radius)
 
     progress_bar = ProgressBar(width=20)
     connector_E = FixedProbabilityConnector(0.15, rng=rng, callback=progress_bar)
