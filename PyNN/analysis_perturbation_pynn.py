@@ -7,6 +7,7 @@ import matplotlib.patches as patches
 import sys
 sys.path.append("../SpikingSimulationModels")
 import defaultParams
+import matplotlib
 
 # transitent time to discard the data (ms)
 Ttrans = defaultParams.Ttrans
@@ -71,16 +72,17 @@ fig0, (ax1, ax2) = pl.subplots(2, 1, sharex=True)
 
 fig0.set_size_inches(12, 8, forward=True)
 
+red = '#ff0000'
 lblue = '#99c2ff'
 dblue = '#0047b3'
 
-ax1.plot(e_spt, e_spi, '.', color='red',markersize=2)
+ax1.plot(e_spt, e_spi, '.', color=red,markersize=2)
 ax1.plot(pi_spt, pi_spi, '.', color=dblue,markersize=2)
 ax1.plot(npi_spt, npi_spi, '.', color=lblue,markersize=2)
 
 ax1.set_ylabel('Cell index')
 
-bw = 50
+bw = 100
 hst = np.histogram2d(spt, spi, range=((0,T),(0,N-1)), bins=(T/bw,N))
 
 tt = hst[1][0:-1] + np.diff(hst[1])[0]/2
@@ -95,14 +97,14 @@ r_exc_m = np.nanmean(r_exc,1)
 r_inh_pert_m = np.nanmean(r_inh_pert,1)
 r_inh_nonpert_m = np.nanmean(r_inh_nonpert,1)
 
-ax2.plot(tt, r_exc_m, 'r', lw=2)
+ax2.plot(tt, r_exc_m, red, lw=2)
 ax2.plot(tt, r_inh_pert_m, dblue, lw=2)
 ax2.plot(tt, r_inh_nonpert_m, lblue, lw=2)
 
 pl.ylabel('Firing rate (Hz)')
 pl.xlabel('Time (ms)')
 
-height = 20
+height = ax2.get_ylim()[1]
 
 pl.xlim([0,T])
 pl.ylim([0,height])
@@ -119,10 +121,21 @@ ax2.add_patch(
 t1 = (tt>Ttrans)*(tt<(Ttrans+Tblank))
 t2 = (tt>(Ttrans+Tblank))*(tt<(Ttrans+Tblank+Tstim))
 
+if False:
+    matplotlib.pyplot.text(100, 15,'Exc.',  color=red)
+    matplotlib.pyplot.text(100, 13,'Inh. (pert.)',  color=dblue)
+    matplotlib.pyplot.text(100, 11, 'Inh. (non pert.)',  color=lblue)
+
 print('before vs after perturbation')
 print('exc: ', np.nanmean(r_exc[t1]), np.nanmean(r_exc[t2]))
 print('inh (pert): ', np.nanmean(r_inh_pert_m[t1]), np.nanmean(r_inh_pert_m[t2]))
 print('inh (non-pert): ', np.nanmean(r_inh_nonpert_m[t1]), np.nanmean(r_inh_nonpert_m[t2]))
+
+for ax in [ax1,ax2]:    
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.yaxis.set_ticks_position('left')
+    ax.xaxis.set_ticks_position('bottom')
 
 fig0.savefig('rates.png', dpi=150, bbox_inches='tight')
 
