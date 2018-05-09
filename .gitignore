@@ -31,3 +31,7 @@
 /PyNN/Me.png
 /PyNN/*.pov
 /PyNN/*.ini
+/PyNN/rerun.sh
+/PyNN/rates0.png
+/PyNN/kernelseed
+/PyNN/clean.sh

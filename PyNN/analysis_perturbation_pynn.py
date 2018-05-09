@@ -5,6 +5,7 @@ import pylab as pl
 import matplotlib.patches as patches
 
 import sys
+import os
 sys.path.append("../SpikingSimulationModels")
 import defaultParams
 import matplotlib
@@ -74,7 +75,9 @@ fig0.set_size_inches(12, 8, forward=True)
 
 red = '#ff0000'
 lblue = '#99c2ff'
+lgrey = '#dddddd'
 dblue = '#0047b3'
+dblue2 = '#444444'
 
 ax1.plot(e_spt, e_spi, '.', color=red,markersize=2)
 ax1.plot(pi_spt, pi_spi, '.', color=dblue,markersize=2)
@@ -95,11 +98,45 @@ r_inh_nonpert = rr[:,N-NI_nonpert:]
 
 r_exc_m = np.nanmean(r_exc,1)
 r_inh_pert_m = np.nanmean(r_inh_pert,1)
+
+ks = open('kernelseed')
+kernelseed = int(ks.read())
+print('kernelseed from last simulation: %i'%kernelseed)
+file_rates = 'pertinh.rate.%i.dat'%kernelseed
+pertinh = open(file_rates,'w')
+print("Saving to file %s list of rates for this seed: %s"%(pertinh,r_inh_pert_m))
+for r in r_inh_pert_m:
+    pertinh.write('%s\n'%r)
+pertinh.close()
+
+all_r = []
+# Load all rates files in & average
+for f in os.listdir():
+    if f.startswith('pertinh.rate'):
+        r = pl.loadtxt(f)
+        all_r.append(r)
+        print("Loaded rates from %s: %s"%(f,r))
+        
+        #ax2.plot(tt, r, lgrey, lw=0.3)
+     
+avg_r = []
+
+for i_t in range(len(all_r[0])):
+    r = 0
+    for i_r in range(len(all_r)):
+        r+= all_r[i_r][i_t]
+    r/=len(all_r)
+    avg_r.append(r)
+
+ax2.plot(tt, avg_r, dblue2, lw=2, linestyle=':')
+
 r_inh_nonpert_m = np.nanmean(r_inh_nonpert,1)
 
 ax2.plot(tt, r_exc_m, red, lw=2)
 ax2.plot(tt, r_inh_pert_m, dblue, lw=2)
 ax2.plot(tt, r_inh_nonpert_m, lblue, lw=2)
+
+
 
 pl.ylabel('Firing rate (Hz)')
 pl.xlabel('Time (ms)')
@@ -121,10 +158,11 @@ ax2.add_patch(
 t1 = (tt>Ttrans)*(tt<(Ttrans+Tblank))
 t2 = (tt>(Ttrans+Tblank))*(tt<(Ttrans+Tblank+Tstim))
 
-if False:
-    matplotlib.pyplot.text(100, 15,'Exc.',  color=red)
+if True:
+    matplotlib.pyplot.text(100, 17,'Exc.',  color=red)
+    matplotlib.pyplot.text(100, 15, 'Inh. (non pert.)',  color=lblue)
     matplotlib.pyplot.text(100, 13,'Inh. (pert.)',  color=dblue)
-    matplotlib.pyplot.text(100, 11, 'Inh. (non pert.)',  color=lblue)
+    matplotlib.pyplot.text(100, 11,'Inh. (pert.) avg %s'%len(all_r),  color=dblue2)
 
 print('before vs after perturbation')
 print('exc: ', np.nanmean(r_exc[t1]), np.nanmean(r_exc[t2]))
@@ -139,4 +177,5 @@ for ax in [ax1,ax2]:
 
 fig0.savefig('rates.png', dpi=150, bbox_inches='tight')
 
-pl.show()
+if not '-nogui' in sys.argv:
+    pl.show()

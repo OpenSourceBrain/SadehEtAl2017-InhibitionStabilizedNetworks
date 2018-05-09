@@ -21,7 +21,8 @@ def runNetwork(Be,
                N_rec_v = 5, 
                save=False, 
                simtime = defaultParams.Tpost+defaultParams.Tstim+defaultParams.Tblank+defaultParams.Ttrans, 
-               extra = {}):
+               extra = {},
+               kernelseed = 123):
     
     exec("from pyNN.%s import *" % simulator_name) in globals()
     
@@ -65,8 +66,12 @@ def runNetwork(Be,
         
     timer.start()  # start timer on construction
     
-    print("%d Setting up random number generator" % rank)
-    kernelseed = 123
+    print("%d Setting up random number generator using seed %s" % (rank, kernelseed))
+    
+    ks = open('kernelseed','w')
+    ks.write('%i'%kernelseed)
+    ks.close()
+    
     rng = NumpyRNG(kernelseed, parallel_safe=True)
     
     
@@ -264,6 +269,7 @@ if __name__ == '__main__':
     size = 2000
     fraction_to_stim = 0.75
     defaultParams.Tpost = 500
+    kernelseed = 123
     
     if len(sys.argv)>=3:
         try:
@@ -277,6 +283,9 @@ if __name__ == '__main__':
             defaultParams.set_total_population_size(size)
         except:
             pass
+        
+    if len(sys.argv)>=5:
+        kernelseed = int(sys.argv[4])
         
     N_rec_v = min(10,size)
     
@@ -292,7 +301,13 @@ if __name__ == '__main__':
         
 
     for nn_stim in nn_stim_rng:
-        runNetwork(Be, Bi, nn_stim, show_gui=show_gui, save=True,N_rec_v=N_rec_v)
+        runNetwork(Be, 
+                   Bi, 
+                   nn_stim, 
+                   show_gui=show_gui, 
+                   save=True,
+                   N_rec_v=N_rec_v,
+                   kernelseed=kernelseed)
         
     if show_gui:
         plt.show()
