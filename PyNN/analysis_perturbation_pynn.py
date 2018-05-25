@@ -79,11 +79,15 @@ lgrey = '#dddddd'
 dblue = '#0047b3'
 dblue2 = '#444444'
 
-ax1.plot(e_spt, e_spi, '.', color=red,markersize=2)
 ax1.plot(pi_spt, pi_spi, '.', color=dblue,markersize=2)
 ax1.plot(npi_spt, npi_spi, '.', color=lblue,markersize=2)
+ax1.plot(e_spt, e_spi, '.', color=red,markersize=2)
 
 ax1.set_ylabel('Cell index')
+
+yl = ax1.get_ylim()
+
+ax1.set_ylim([yl[1],yl[0]])
 
 bw = 100
 hst = np.histogram2d(spt, spi, range=((0,T),(0,N-1)), bins=(T/bw,N))
@@ -128,7 +132,7 @@ for i_t in range(len(all_r[0])):
     r/=len(all_r)
     avg_r.append(r)
 
-ax2.plot(tt, avg_r, dblue2, lw=2, linestyle=':')
+ax2.plot(tt, avg_r, dblue2, lw=4, linestyle=':')
 
 r_inh_nonpert_m = np.nanmean(r_inh_nonpert,1)
 
