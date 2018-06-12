@@ -25,17 +25,10 @@ def _simulation_time_():
 bNestUseConvergentConnect = "ConvergentConnect" in dir(nest)
 
 def ConvConnect(arg0, arg1, syn_spec='static_synapse', *args):
-    if bNestUseConvergentConnect:
-        return nest.ConvergentConnect(arg0, arg1, model=syn_spec)
-    else:
-        return nest.Connect(arg0, arg1, syn_spec=syn_spec)
+    return nest.Connect(arg0, arg1, syn_spec=syn_spec)
 
 def DivConnect(arg0, arg1, syn_spec='static_synapse', *args):
-    if bNestUseConvergentConnect:
-        return nest.DivergentConnect(arg0, arg1, model=syn_spec)
-    else:
-        return nest.Connect(arg0, arg1, syn_spec=syn_spec)
-
+    return nest.Connect(arg0, arg1, syn_spec=syn_spec)
 
 # --- Making neurons
 def _make_neurons_(N, neuron_model="iaf_cond_alpha", myparams={}):
@@ -108,16 +101,16 @@ def _reading_voltages_(voltages):
     voltage_data = nest.GetStatus(voltages)[0]['events']
     return voltage_data
 
-# --- Connect
-def _connect_(xx, yy, ww, dd=delay_default):
-    nest.Connect(xx, yy, syn_spec = {'weight':ww, 'delay':dd})
-
 # --- Connect population A to population B with weight matrix W
 def _connect_pops_(pre_pop, post_pop, weight, syn_model='static'):
-    for ii, nn in enumerate(pre_pop):
-        ww = weight[ii]
-        dd = dt + delay_default*np.ones(len(ww))
-        nest.DivergentConnect([nn], post_pop, weight=ww.tolist(), delay=dd.tolist())
+    print(weight.shape)
+    dd = dt + delay_default*np.ones(weight.T.shape)
+    nest.Connect(pre_pop, post_pop, syn_spec = {'weight':weight.T, 'delay':dd})
+    
+    #for ii, nn in enumerate(pre_pop):
+    #    ww = weight[ii]
+    #    dd = dt + delay_default*np.ones(len(ww))
+    #    nest.Connect([nn], post_pop, syn_spec = {'weight':ww.tolist(), 'delay':dd.tolist()})
     print("  Created %s non zero weight connections from %s to %s, %s"%(np.count_nonzero(weight),_pop_info_(pre_pop), _pop_info_(post_pop), syn_model))
     
 def _pop_info_(pop):
