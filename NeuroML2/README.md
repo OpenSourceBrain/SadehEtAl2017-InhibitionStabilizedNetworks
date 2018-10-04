@@ -1,0 +1,3 @@
+Work in progress...
+
+See https://github.com/OpenSourceBrain/MultiscaleISN for an extended NeuroML2 version of this network
