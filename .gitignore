@@ -40,3 +40,4 @@
 /PyNN/runall.sh
 /PyNN/*.pyc
 /PyNN/__pycache__
+*.gv.png
