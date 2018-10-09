@@ -37,7 +37,6 @@
 /PyNN/clean.sh
 /PyNN/old*
 /PyNN/rates.png
-/PyNN/runall.sh
 /PyNN/*.pyc
 /PyNN/__pycache__
 *.gv.png
