@@ -29,7 +29,7 @@ virtualenv:
 env:
     - OMV_ENGINE=PyNEST
     #- OMV_ENGINE=PyNN_Brian1
-    - OMV_ENGINE=PyNN_NEURON    # Takes x mins...
+    - OMV_ENGINE=PyNN_NEURON    # Takes ~9 mins...
     - OMV_ENGINE=PyNN_Nest
     #- OMV_ENGINE=jNeuroML_validate
 
@@ -40,7 +40,7 @@ install:
 
     - git clone https://github.com/OpenSourceBrain/osb-model-validation
     - cd osb-model-validation
-    - git checkout nest2_10 # Nest v2.10.0
+    #- git checkout nest2_10 # Nest v2.10.0
     - python setup.py install
     - cd ..
 
@@ -49,5 +49,5 @@ script:
     - ./make_tests.sh
     - ls -alt
     - omv all -V # Run simulateNetworks.py
-    #- python analyzeResults.py 
+    - omv list -V 
 
