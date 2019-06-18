@@ -21,4 +21,17 @@ experiments:
           format: TIME_ID
           id: 1998
         tolerance: 0.000
+        
+  v:
+    observables:
+      spike times:
+        file: 
+          path: ISN-nest-EI-cell0.dat
+          columns: [0,1]
+          scaling: [1000, 1000]
+        spike detection: 
+          method: threshold
+          threshold: -40
+        tolerance: 0
+
 

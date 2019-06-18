@@ -6,7 +6,6 @@ import numpy as np
 from pyNN.utility import get_script_args, Timer, ProgressBar
 from pyNN.random import NumpyRNG
 from pyNN.space import RandomStructure, Cuboid
-from neo.io import PyNNTextIO
 
 sys.path.append("../SpikingSimulationModels")
 
@@ -217,15 +216,31 @@ def runNetwork(Be,
     # write data to file
     if save and not simulator_name=='neuroml':
         for pop in [EI_pop]:
-            io = PyNNTextIO(filename="ISN-%s-%s-%i.gdf"%(simulator_name, pop.label, rank))
+            filename="ISN-%s-%s-%i.gdf"%(simulator_name, pop.label, rank)
+            ff = open(filename, 'w')
             spikes =  pop.get_data('spikes', gather=False)
-            for segment in spikes.segments:
-                io.write_segment(segment)
+            spiketrains = spikes.segments[0].spiketrains
+            print('Saving data recorded for %i spiketrains in pop %s, indices: %s, ids: %s to %s'% \
+                (len(spiketrains),
+                 pop.label, 
+                 [s.annotations['source_index'] for s in spiketrains], 
+                 [s.annotations['source_id'] for s in spiketrains], 
+                 filename))
+                 
+            for spiketrain_i in range(len(spiketrains)):
+                spiketrain = spiketrains[spiketrain_i]
+                source_id = spiketrain.annotations['source_id']
+                source_index = spiketrain.annotations['source_index']
+                #print("Writing spike data for cell %s[%s] (gid: %i): %i spikes: [%s,...,%s] "%(pop.label,source_index, source_id, len(spiketrain),spiketrain[0],spiketrain[-1]))
+                for t in spiketrain:
+                    ff.write('%s\t%i\n'%(t.magnitude,spiketrain_i))
+            ff.close()
                 
             vs =  pop.get_data('v', gather=False)
             for segment in vs.segments:
                 for i in range(len(segment.analogsignals[0].transpose())):
                     filename="ISN-%s-%s-cell%i.dat"%(simulator_name, pop.label, i)
+                    print('Saving cell %i in %s to %s'%(i,pop.label,filename))
                     vm = segment.analogsignals[0].transpose()[i]
                     tt = np.array([t*dt/1000. for t in range(len(vm))])
                     times_vm = np.array([tt, vm/1000.]).transpose()
