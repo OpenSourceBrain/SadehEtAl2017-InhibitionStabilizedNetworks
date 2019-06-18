@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 from pyNN.utility import get_script_args, Timer, ProgressBar
-from pyNN.random import NumpyRNG, RandomDistribution
+from pyNN.random import NumpyRNG
 from pyNN.space import RandomStructure, Cuboid
 from neo.io import PyNNTextIO
 

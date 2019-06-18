@@ -12,6 +12,7 @@ addons:
     - python-matplotlib 
     - python-sympy
     - python-tables 
+    - python-tornado
     - python-tk
     - libreadline6-dev 
     - libncurses5-dev 
@@ -28,7 +29,7 @@ virtualenv:
 env:
     - OMV_ENGINE=PyNEST
     #- OMV_ENGINE=PyNN_Brian1
-    #- OMV_ENGINE=PyNN_NEURON
+    - OMV_ENGINE=PyNN_NEURON    # Takes x mins...
     - OMV_ENGINE=PyNN_Nest
     #- OMV_ENGINE=jNeuroML_validate
 
