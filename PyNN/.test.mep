@@ -1,0 +1,10 @@
+system: Test 
+
+experiments:
+
+    spike_rate_e:
+        expected:
+            spike rate: 0.012638057036100884
+    spike_rate_i:
+        expected:
+            spike rate: 0.012168024547666913

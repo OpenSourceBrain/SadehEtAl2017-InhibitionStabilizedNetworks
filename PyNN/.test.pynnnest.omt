@@ -2,3 +2,23 @@
  
 target: runNetwork.py 
 engine: PyNN_Nest
+mep: .test.mep
+experiments:
+
+  spike_rate_e:
+    observables:
+      spike rate:
+        spiketimes file: 
+          path: ISN-nest-EI-0.gdf
+          format: TIME_ID
+          id: 0
+        tolerance: 0.00
+  spike_rate_i:
+    observables:
+      spike rate:
+        spiketimes file: 
+          path: ISN-nest-EI-0.gdf
+          format: TIME_ID
+          id: 1998
+        tolerance: 0.000
+
