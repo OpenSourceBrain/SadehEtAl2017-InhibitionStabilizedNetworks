@@ -11,7 +11,7 @@ experiments:
         spiketimes file: 
           path: ISN-nest-EI-0.gdf
           format: TIME_ID
-          id: 0
+          ids: 0
         tolerance: 0.00
   spike_rate_i:
     observables:
@@ -19,7 +19,7 @@ experiments:
         spiketimes file: 
           path: ISN-nest-EI-0.gdf
           format: TIME_ID
-          id: 1998
+          ids: 49
         tolerance: 0.000
         
   v:
