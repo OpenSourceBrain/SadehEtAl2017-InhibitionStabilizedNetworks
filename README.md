@@ -13,7 +13,7 @@ Firing rate models for the network in MATLAB can be found [here](LinearThreshold
 
 Spiking network models can be found [here](SpikingSimulationModels).
 
-[![Build Status](https://travis-ci.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks.svg?branch=master)](https://travis-ci.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks)
+[![Continuous build using OMV](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml/badge.svg)](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml)
 
 [![DOI](https://www.zenodo.org/badge/120604178.svg)](https://www.zenodo.org/badge/latestdoi/120604178)
 
