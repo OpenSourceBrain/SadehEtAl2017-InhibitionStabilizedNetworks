@@ -93,7 +93,7 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
         def _rate_interval_(spikedata, T1, T2, bw=bw):
             tids = (spikedata['times']>T1) * (spikedata['times']<T2)
             rr = np.histogram2d(spikedata['times'][tids], spikedata['senders'][tids], \
-                 range=((T1,T2),(1,N)), bins=((T2-T1)/bw,N))[0] / (bw/1e3)
+                 range=((T1,T2),(1,N)), bins=(int((T2-T1)/bw),N))[0] / (bw/1e3)
             return rr
 
         rout_blank = np.zeros((Ntrials, int(Tblank / bw), N))

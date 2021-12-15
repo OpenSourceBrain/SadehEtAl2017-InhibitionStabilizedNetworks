@@ -35,16 +35,16 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         Ntrials = 1
         bw = 50.
         N_max_rec_v = 2001
-        
+
         rec_conn={'EtoE':1, 'EtoI':1, 'ItoE':1, 'ItoI':1}
 
         print('####################')
         print('### Be: %s, Bi: %s, nn_stim: %s) '%(Be, Bi, nn_stim))
         print('####################')
-        
+
         Bee, Bei = Be, Be
         Bie, Bii = Bi, Bi
-        
+
         N = defaultParams.N
         NE = defaultParams.NE
         NI = defaultParams.NI
@@ -57,8 +57,8 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         rr1 = defaultParams.r_bkg*np.ones(N)
         rr2 = rr1 + r_extra
 
-        
-        
+
+
         # -- restart the simulator
         net_tools._nest_start_()
 
@@ -71,13 +71,13 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         myparams={'b':NE*[0.], 'a':NE*[0.]})
         inh_neurons = net_tools._make_neurons_(NI, neuron_model=defaultParams.cell_type, \
         myparams={'b':NE*[0.],'a':NE*[0.]})
-        
+
         # -- L23 recurrent connectivity
         W_EtoE = _mycon_(NE, NE, Bee, .15)
         W_EtoI = _mycon_(NE, NI, Bei, .15)
         W_ItoE = _mycon_(NI, NE, Bie, 1.)
         W_ItoI = _mycon_(NI, NI, Bii, 1.)
-        
+
         all_neurons = exc_neurons + inh_neurons
 
         # -- recurrent connectivity
@@ -92,7 +92,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
 
         # -- recording spike data
         spikes_all = net_tools._recording_spikes_(neurons=all_neurons)
-        
+
         if N<=N_max_rec_v:
             v_all = net_tools._recording_voltages_(neurons=all_neurons)
 
@@ -122,11 +122,11 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
             for ii in range(N):
                 nest.SetStatus([pos_inp[ii]], {'rate':rr2[ii]})
             net_tools._run_simulation_(defaultParams.Tstim)
-            
-            
+
+
         # -- reading out spiking activity
         spd = net_tools._reading_spikes_(spikes_all)
-        
+
         if N<=N_max_rec_v:
             v_rec = net_tools._reading_voltages_(v_all)
             all_v = {}
@@ -140,14 +140,14 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                 all_v[index].append(v)
                 if not t in all_t:
                     all_t.append(t)
-            
-            
+
+
 
         # -- computes the rates out of spike data in a given time interval
         def _rate_interval_(spikedata, T1, T2, bw=bw):
             tids = (spikedata['times']>T1) * (spikedata['times']<T2)
             rr = np.histogram2d(spikedata['times'][tids], spikedata['senders'][tids], \
-                 range=((T1,T2),(1,N)), bins=((T2-T1)/bw,N))[0] / (bw/1e3)
+                 range=((T1,T2),(1,N)), bins=(int((T2-T1)/bw),N))[0] / (bw/1e3)
             return rr
 
         rout_blank = np.zeros((Ntrials, int(defaultParams.Tblank / bw), N))
@@ -170,8 +170,8 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         np.round(rout_stim[:,:,NE:NE+nn_stim].mean(),1), \
         np.round(rout_stim[:,:,NE+nn_stim:].mean(),1) )
         print('##########')
-        
-        
+
+
         xs = [[],[],[]]
         ys = [[],[],[]]
         all_e = []
@@ -192,18 +192,18 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                 xs[2].append(time)
                 all_inp.append(time)
                 ys[2].append(cellnum)
-        
+
         if show_gui:
-            
+
             from pyneuroml import pynml
             print("Plotting %s spikes for %s E cells, %s spikes for %s Ip cells, %s spikes for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
             mksz = 1 if N> 100 else None
             pynml.generate_plot(xs,
                                 ys,
-                                "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim), 
-                                xaxis = "Time (s)", 
-                                yaxis = "Cell number", 
+                                "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim),
+                                xaxis = "Time (s)",
+                                yaxis = "Cell number",
                                 colors = ['red','black','blue'],
                                 linestyles = ['','',''],
                                 markers = ['.','.','.'],
@@ -218,8 +218,8 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
             plt.hist(all_ip, bins=bins,histtype='step',weights=[1/float(nn_stim)]*len(all_ip),color='black')
             plt.hist(all_inp, bins=bins,histtype='step',weights=[1/float(N-NE-nn_stim)]*len(all_inp),color='blue',ls='--')
             plt.title("Histogram of spikes")
-            
-            
+
+
             if N<=N_max_rec_v:
                 xs = []
                 ys = []
@@ -234,48 +234,48 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                         colors.append('black')
                     else:
                         colors.append('blue')
-                    
+
                     f = open('cell_%i.dat'%i,'w')
                     for ti in range(len(all_t)):
                         t = all_t[ti]/1000.
                         v = all_v[i][ti]/1000.
                         f.write('%s\t%s\n'%(t,v))
                     f.close()
-                        
+
                 #print("Plotting %s traces for %s E cells, %s traces for %s Ip cells, %s traces for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
                 pynml.generate_plot(xs,
                                     ys,
-                                    "Voltage traces: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim), 
-                                    xaxis = "Time (s)", 
-                                    yaxis = "Membrane potential (V)", 
+                                    "Voltage traces: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim),
+                                    xaxis = "Time (s)",
+                                    yaxis = "Membrane potential (V)",
                                     colors = colors,
                                     grid = False,
                                     show_plot_already=False)
-        
-    
+
+
 if __name__ == '__main__':
-    
+
     Be=0.1
     Bi=-0.2
-    
+
     if '-small' in sys.argv:
         defaultParams.set_total_population_size(100)
         Be=.1
         Bi=-.1
-    
+
     nn_stim_rng = (np.array([0.1, .25, .5, .75, 1])*defaultParams.NI).astype('int')
     nn_stim_rng = (np.array([.75])*defaultParams.NI).astype('int')
-    
+
     if '-small' in sys.argv:
         nn_stim_rng = (np.array([0.75])*defaultParams.NI).astype('int')
 
     if '-nogui' in sys.argv:
         show_gui = False
     else:
-        import matplotlib.pyplot as plt 
-        show_gui = True 
-        
+        import matplotlib.pyplot as plt
+        show_gui = True
+
     import networkTools as net_tools
 
     if '-small' in sys.argv:
@@ -284,6 +284,6 @@ if __name__ == '__main__':
 
     for nn_stim in nn_stim_rng:
         runNetwork(Be, Bi, nn_stim, show_gui=show_gui)
-        
+
     if show_gui:
         plt.show()
