@@ -1,5 +1,7 @@
 ## Sadeh et al. 2017 - Inhibition Stabilized Networks
 
+[![Continuous build using OMV](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml/badge.svg)](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml)
+
 Models of Inhibition Stabilized Networks in mammalian neocortex. Theoretical, firing-rate and spiking models of cortical networks with increasing realism, to explore how networks respond to perturbation of neural activity. From:
 
 
@@ -12,8 +14,6 @@ Firing rate models for the network in MATLAB can be found [here](LinearThreshold
 ### SpikingSimulationModels
 
 Spiking network models can be found [here](SpikingSimulationModels).
-
-[![Continuous build using OMV](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml/badge.svg)](https://github.com/OpenSourceBrain/SadehEtAl2017-InhibitionStabilizedNetworks/actions/workflows/omv-ci.yml)
 
 [![DOI](https://www.zenodo.org/badge/120604178.svg)](https://www.zenodo.org/badge/latestdoi/120604178)
 
