@@ -216,6 +216,14 @@ def runNetwork(Be,
     print("Done")
     simCPUTime = timer.elapsedTime()
 
+
+    def get_source_id(spiketrain):
+        if 'source_id' in spiketrain.annotations:
+            return spiketrain.annotations['source_id']
+
+        elif 'channel_id' in spiketrain.annotations: # See https://github.com/NeuralEnsemble/PyNN/pull/762
+            return spiketrain.annotations['channel_id']
+
     # write data to file
     if save and not simulator_name=='neuroml':
         for pop in [EI_pop]:
@@ -226,14 +234,14 @@ def runNetwork(Be,
             print('Saving data recorded for %i spiketrains in pop %s, indices: %s, ids: %s to %s'% \
                 (len(spiketrains),
                  pop.label,
-                 [s.annotations['source_index'] for s in spiketrains],
-                 [s.annotations['source_id'] for s in spiketrains],
+                 [pop.id_to_index(get_source_id(s)) for s in spiketrains],
+                 [get_source_id(s) for s in spiketrains],
                  filename))
 
             for spiketrain_i in range(len(spiketrains)):
                 spiketrain = spiketrains[spiketrain_i]
-                source_id = spiketrain.annotations['source_id']
-                source_index = spiketrain.annotations['source_index']
+                source_id = get_source_id(spiketrain)
+                source_index = pop.id_to_index(source_id)
                 #print("Writing spike data for cell %s[%s] (gid: %i): %i spikes: [%s,...,%s] "%(pop.label,source_index, source_id, len(spiketrain),spiketrain[0],spiketrain[-1]))
                 for t in spiketrain:
                     ff.write('%s\t%i\n'%(t.magnitude,spiketrain_i))
