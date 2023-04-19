@@ -35,8 +35,9 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
         # -- restart the simulator
         net_tools._nest_start_()
 
-        init_seed = np.random.randint(1, 1234, n_cores)
-        nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
+        #init_seed = np.random.randint(1, 1234, n_cores)
+        #nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
+        nest.rng_seed = np.random.randint() # preferred NEST 3 way...
 
         # -- exc & inh neurons
         exc_neurons = net_tools._make_neurons_(NE, neuron_model=cell_type, \
@@ -63,7 +64,7 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
         pos_inp = nest.Create("poisson_generator", N)
 
         for ii in range(N):
-            nest.Connect([pos_inp[ii]], [all_neurons[ii]], \
+            nest.Connect(pos_inp[ii], all_neurons[ii], \
             syn_spec = {'weight':Be_bkg, 'delay':delay_default})
 
         # -- simulating network for N-trials
@@ -73,17 +74,17 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
 
             ## transient
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr1[ii]})
             net_tools._run_simulation_(Ttrans)
 
             ## baseline
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr1[ii]})
             net_tools._run_simulation_(Tblank)
 
             ## perturbing a subset of inh
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr2[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr2[ii]})
             net_tools._run_simulation_(Tstim)
 
         # -- reading out spiking activity

@@ -80,7 +80,7 @@ def smooth(x,window_len=11,window='flat'):#hanning'):
 
 
 def mySmooth(xx, ker_size = 51):
-    ker = norm.pdf(np.linspace(-int(ker_size/2),int(ker_size/2),ker_size), scale=ker_size/5)
+    ker = norm.pdf(np.linspace(-int(ker_size/2),int(ker_size/2),int(ker_size)), scale=ker_size/5)
     zz = np.convolve(xx, ker, 'size')
     return zz
 
@@ -186,7 +186,7 @@ def analyse(fraction_to_stim, size,
         ax1b.set_yticks([NE,NE+NE2-1])
 
     bw = 1#0
-    hst = np.histogram2d(spt, spi, range=((0,T),(0,N-1)), bins=(T/bw,N))
+    hst = np.histogram2d(spt, spi, range=((0,T),(0,N-1)), bins=(int(T/bw),N))
 
     tt = hst[1][0:-1] + np.diff(hst[1])[0]/2
     rr = hst[0] / (bw/1000)

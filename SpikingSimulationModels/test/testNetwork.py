@@ -63,8 +63,8 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         net_tools._nest_start_()
 
         np.random.seed(1234)
-        init_seed = np.random.randint(1, 1234, defaultParams.n_cores)
-        nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
+        #init_seed = np.random.randint(1, 1234, defaultParams.n_cores)
+        nest.rng_seed = np.random.randint(1, 1234) # preferred NEST 3 way...
 
         # -- exc & inh neurons
         exc_neurons = net_tools._make_neurons_(NE, neuron_model=defaultParams.cell_type, \
@@ -100,7 +100,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
         pos_inp = nest.Create("poisson_generator", N)
 
         for ii in range(N):
-            nest.Connect([pos_inp[ii]], [all_neurons[ii]], \
+            nest.Connect(pos_inp[ii], all_neurons[ii], \
             syn_spec = {'weight':defaultParams.Be_bkg, 'delay':defaultParams.delay_default})
 
         # -- simulating network for N-trials
@@ -110,17 +110,17 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
 
             ## transient
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr1[ii]})
             net_tools._run_simulation_(defaultParams.Ttrans)
 
             ## baseline
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr1[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr1[ii]})
             net_tools._run_simulation_(defaultParams.Tblank)
 
             ## perturbing a subset of inh
             for ii in range(N):
-                nest.SetStatus([pos_inp[ii]], {'rate':rr2[ii]})
+                nest.SetStatus(pos_inp[ii], {'rate':rr2[ii]})
             net_tools._run_simulation_(defaultParams.Tstim)
 
 
@@ -198,7 +198,7 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
             from pyneuroml import pynml
             print("Plotting %s spikes for %s E cells, %s spikes for %s Ip cells, %s spikes for %s Inp cells"%(len(xs[0]), NE ,len(xs[1]), nn_stim, len(xs[2]), N-NE-nn_stim))
 
-            mksz = 1 if N> 100 else None
+            mksz = 0.5 if N> 100 else 1
             pynml.generate_plot(xs,
                                 ys,
                                 "Spike times: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim),
@@ -224,10 +224,14 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                 xs = []
                 ys = []
                 colors = []
+                linestyles = []
+                markersizes = []
 
                 for i in all_v:
                     xs.append(all_t)
                     ys.append(all_v[i])
+                    linestyles.append('-')
+                    markersizes.append(0)
                     if i<=NE:
                         colors.append('red')
                     elif i<=NE+nn_stim:
@@ -248,8 +252,10 @@ def runNetwork(Be, Bi , nn_stim, show_gui=True):
                                     ys,
                                     "Voltage traces: Be=%s; Bi=%s; N=%s; p=%s"%(Be,Bi,N,nn_stim),
                                     xaxis = "Time (s)",
-                                    yaxis = "Membrane potential (V)",
+                                    yaxis = "Membrane potentiacccl (V)",
                                     colors = colors,
+                                    linestyles=linestyles,
+                                    markersizes=markersizes,
                                     grid = False,
                                     show_plot_already=False)
 

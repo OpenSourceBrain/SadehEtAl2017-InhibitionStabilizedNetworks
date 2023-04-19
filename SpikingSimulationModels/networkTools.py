@@ -37,7 +37,9 @@ def _make_neurons_(N, neuron_model="iaf_cond_alpha", myparams={}):
     if myparams != {}:
         for nn in range(N):
             for kk in myparams.keys():
-                nest.SetStatus([neurons[nn]], {kk:myparams[kk][nn]})
+                #nest.SetStatus([neurons[nn]], {kk:myparams[kk][nn]})
+                #print("Setting %s to %s on neuron %s"%(kk, myparams[kk][nn], nn))
+                nest.SetStatus(neurons[nn], {kk:myparams[kk][nn]})
     return neurons
 
 # --- Generating (poisson) inputs and setting their firing rates
@@ -71,11 +73,8 @@ def _define_synapse_(syn_type='static_synapse', name='exc', w=Be*1e9, d=delay_de
 
 # --- Recording and reading spikes and voltages
 def _recording_spikes_(neurons, start=0., stop=np.inf, to_file=False, to_memory=True):
-    spikes = nest.Create("spike_detector", 1)
-    nest.SetStatus(spikes, {"withtime":True,
-                        "label":'spike-det',
-                        "to_file":to_file,
-                        "to_memory":to_memory,
+    spikes = nest.Create("spike_recorder", 1)
+    nest.SetStatus(spikes, {"label":'spike-det',
                         "start": start,
                         "stop": stop})
 
@@ -84,10 +83,7 @@ def _recording_spikes_(neurons, start=0., stop=np.inf, to_file=False, to_memory=
 
 def _recording_voltages_(neurons, start=0., stop=np.inf):
     voltages = nest.Create("voltmeter")
-    nest.SetStatus(voltages, {"withtime":True,
-                        "label":'volt-meter',
-                        "to_file":False,
-                        "to_memory":True,
+    nest.SetStatus(voltages, {"label":'volt-meter',
                         "start": start,
                         "stop": stop})
     DivConnect(voltages, neurons)
