@@ -37,7 +37,7 @@ def myRun(rr1, rr2, Tstim=Tstim, Tblank=Tblank, Ntrials=Ntrials, bw = bw, \
 
         #init_seed = np.random.randint(1, 1234, n_cores)
         #nest.SetStatus([0],[{'rng_seeds':init_seed.tolist()}])
-        nest.rng_seed = np.random.randint() # preferred NEST 3 way...
+        nest.rng_seed = np.random.randint(1, 1234) # preferred NEST 3 way...
 
         # -- exc & inh neurons
         exc_neurons = net_tools._make_neurons_(NE, neuron_model=cell_type, \
