@@ -134,7 +134,7 @@ sim = Simulation(id='SimISN',
                  network=new_file,
                  duration='1000',
                  dt='0.025',
-                 recordTraces={pE.id:'*',pI.id:'*'})
+                 record_traces={pE.id:'*',pI.id:'*'})
                  
 sim.to_json_file()
 

@@ -1,11 +1,11 @@
 {
     "SimISN": {
-        "version": "NeuroMLlite v0.1.3", 
-        "network": "ISN.json", 
-        "duration": 1000.0, 
-        "dt": 0.025, 
-        "recordTraces": {
-            "Epop": "*", 
+        "version": "NeuroMLlite v0.5.3",
+        "network": "ISN.json",
+        "duration": 1000.0,
+        "dt": 0.025,
+        "record_traces": {
+            "Epop": "*",
             "Ipop": "*"
         }
     }

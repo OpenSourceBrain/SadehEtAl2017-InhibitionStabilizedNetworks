@@ -1,130 +1,112 @@
 {
     "ISN": {
-        "version": "NeuroMLlite v0.1.3", 
+        "version": "NeuroMLlite v0.5.3",
+        "notes": "Based on network of Sadeh et al. 2017",
         "parameters": {
-            "fraction_E": 0.8, 
-            "Be": 0.4, 
-            "Be_bkg": 0.1, 
-            "Bi": 0.5, 
-            "N": 10, 
-            "fraction_stimulated": 0.75, 
+            "N": 10,
+            "fraction_E": 0.8,
+            "fraction_stimulated": 0.75,
+            "Be": 0.4,
+            "Bi": 0.5,
+            "Be_bkg": 0.1,
             "bkg_rate": 9600
-        }, 
-        "notes": "Based on network of Sadeh et al. 2017", 
-        "cells": [
-            {
-                "eifcell": {
-                    "pynn_cell": "EIF_cond_alpha_isfa_ista", 
-                    "parameters": {
-                        "tau_refrac": 2.0, 
-                        "cm": 0.12, 
-                        "b": 0, 
-                        "v_rest": -70.0, 
-                        "v_spike": 0.0, 
-                        "a": 0, 
-                        "tau_m": 16.8, 
-                        "i_offset": 0.0, 
-                        "delta_T": 2, 
-                        "v_thresh": -50.0, 
-                        "v_reset": -60.0, 
-                        "tau_w": 144.0
-                    }
+        },
+        "cells": {
+            "eifcell": {
+                "parameters": {
+                    "cm": 0.12,
+                    "tau_refrac": 2.0,
+                    "v_spike": 0.0,
+                    "v_reset": -60.0,
+                    "v_rest": -70.0,
+                    "tau_m": 16.8,
+                    "i_offset": 0.0,
+                    "a": 0,
+                    "b": 0,
+                    "delta_T": 2,
+                    "tau_w": 144.0,
+                    "v_thresh": -50.0
+                },
+                "pynn_cell": "EIF_cond_alpha_isfa_ista"
+            },
+            "ssp_pre": {
+                "parameters": {
+                    "rate": "bkg_rate",
+                    "start": 0,
+                    "duration": 1000.0
+                },
+                "pynn_cell": "SpikeSourcePoisson"
+            }
+        },
+        "synapses": {
+            "ampa": {
+                "parameters": {
+                    "e_rev": 0.0,
+                    "tau_syn": 1.0
+                },
+                "pynn_synapse_type": "cond_alpha",
+                "pynn_receptor_type": "excitatory"
+            },
+            "gaba": {
+                "parameters": {
+                    "e_rev": -75.0,
+                    "tau_syn": 1.0
+                },
+                "pynn_synapse_type": "cond_alpha",
+                "pynn_receptor_type": "inhibitory"
+            }
+        },
+        "regions": {
+            "ISN_network": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "width": 1000.0,
+                "height": 100.0,
+                "depth": 1000.0
+            }
+        },
+        "populations": {
+            "Epop": {
+                "size": "int(N*fraction_E)",
+                "component": "eifcell",
+                "properties": {
+                    "color": "0 0 0.8"
+                },
+                "random_layout": {
+                    "region": "ISN_network"
                 }
-            }, 
-            {
-                "ssp_pre": {
-                    "pynn_cell": "SpikeSourcePoisson", 
-                    "parameters": {
-                        "duration": 650.0, 
-                        "start": 0, 
-                        "rate": "bkg_rate"
-                    }
+            },
+            "Ipop": {
+                "size": "N - int(N*fraction_E)",
+                "component": "eifcell",
+                "properties": {
+                    "color": ".8 0 0"
+                },
+                "random_layout": {
+                    "region": "ISN_network"
+                }
+            },
+            "Background_pre": {
+                "size": "int(N*fraction_E)",
+                "component": "ssp_pre",
+                "properties": {
+                    "color": ".8 .8 .8"
+                },
+                "random_layout": {
+                    "region": "ISN_network"
                 }
             }
-        ], 
-        "synapses": [
-            {
-                "ampa": {
-                    "pynn_synapse_type": "cond_alpha", 
-                    "pynn_receptor_type": "excitatory", 
-                    "parameters": {
-                        "e_rev": 0.0, 
-                        "tau_syn": 1.0
-                    }
-                }
-            }, 
-            {
-                "gaba": {
-                    "pynn_synapse_type": "cond_alpha", 
-                    "pynn_receptor_type": "inhibitory", 
-                    "parameters": {
-                        "e_rev": -75.0, 
-                        "tau_syn": 1.0
-                    }
-                }
+        },
+        "projections": {
+            "projBkgPre": {
+                "presynaptic": "Background_pre",
+                "postsynaptic": "Epop",
+                "synapse": "ampa",
+                "delay": 2,
+                "weight": "0.001*Be_bkg",
+                "one_to_one_connector": {}
             }
-        ], 
-        "regions": [
-            {
-                "ISN_network": {
-                    "x": 0.0, 
-                    "y": 0.0, 
-                    "z": 0.0, 
-                    "width": 1000.0, 
-                    "height": 100.0, 
-                    "depth": 1000.0
-                }
-            }
-        ], 
-        "populations": [
-            {
-                "Epop": {
-                    "size": "int(N*fraction_E)", 
-                    "component": "eifcell", 
-                    "properties": {
-                        "color": "0 0 0.8"
-                    }, 
-                    "random_layout": {
-                        "region": "ISN_network"
-                    }
-                }
-            }, 
-            {
-                "Ipop": {
-                    "size": "N - int(N*fraction_E)", 
-                    "component": "eifcell", 
-                    "properties": {
-                        "color": ".8 0 0"
-                    }, 
-                    "random_layout": {
-                        "region": "ISN_network"
-                    }
-                }
-            }, 
-            {
-                "Background_pre": {
-                    "size": "int(N*fraction_E)", 
-                    "component": "ssp_pre", 
-                    "properties": {
-                        "color": ".8 .8 .8"
-                    }, 
-                    "random_layout": {
-                        "region": "ISN_network"
-                    }
-                }
-            }
-        ], 
-        "projections": [
-            {
-                "projBkgPre": {
-                    "presynaptic": "Background_pre", 
-                    "postsynaptic": "Epop", 
-                    "synapse": "ampa", 
-                    "delay": 2, 
-                    "weight": "0.001*Be_bkg", 
-                    "one_to_one_connector": {}
-                }
-            }
-        ]
+        }
     }
 }
